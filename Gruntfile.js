@@ -4,32 +4,66 @@ module.exports = function (grunt) {
     grunt.initConfig({
         // Metadata
         // Task configuration
-        uglify: {
-            options: {
-                banner: '<%= banner %>'
-            },
+        coffee: {
             dist: {
-                src: '<%= concat.dist.dest %>',
-                dest: 'dist/lyft.min.js'
+                options: {
+                    bare: true,
+                    join: true
+                }
+            },
+            files: {}
+        },
+        jade: {
+            dist: {
+                options: {
+                    pretty: true
+                },
+                files: {}
+            }
+        },
+        sass: {
+            dist: {
+                options: {
+                    sourcemap: 'none'
+                },
+                files: {}
             }
         },
         watch: {
-            gruntfile: {
-                files: '<%= jshint.gruntfile.src %>',
-                tasks: ['jshint:gruntfile']
+            coffee: {
+                files: 'coffee/**/*.coffee',
+                tasks: ['coffeelint', 'coffee'],
+                options: {
+                    interrupt: true,
+                    atBegin: true
+                }
             },
-            lib_test: {
-                files: '<%= jshint.lib_test.src %>',
-                tasks: ['jshint:lib_test', 'qunit']
+            jade: {
+                files: 'jade/**/*.jade',
+                tasks: ['jade'],
+                options: {
+                    interrupt: true,
+                    atBegin: true
+                }
+            },
+            sass: {
+                files: 'sass/**/*.scss',
+                tasks: ['sass'],
+                options: {
+                    interrupt: true,
+                    atBegin: true
+                }
             }
         }
     });
 
     // These plugins provide necessary tasks
-    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-coffee');
+    grunt.loadNpmTasks('grunt-contrib-jade');
+    grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     // Default task
-    grunt.registerTask('default', []);
+    //grunt.registerTask('default', []);
 };
 
