@@ -1,0 +1,11 @@
+# Tmp files
+.DS_Store
+*~
+
+# Web storm
+.idea
+
+# JS stack
+.yo-rc.json
+node_modules/
+bower_components/

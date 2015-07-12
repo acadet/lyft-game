@@ -1,0 +1,19 @@
+{
+  "name": "lyft",
+  "version": "0.0.0",
+  "homepage": "https://github.com/acadet/kangaroo",
+  "authors": [
+    "Adrien Cadet <acadet@live.fr>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "devDependencies": {
+    "jquery": "~2.1.4"
+  }
+}
