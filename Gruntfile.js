@@ -18,7 +18,9 @@ module.exports = function (grunt) {
                 options: {
                     pretty: true
                 },
-                files: {}
+                files: {
+                    'html/home.html': 'jade/home.jade'
+                }
             }
         },
         sass: {
@@ -26,7 +28,9 @@ module.exports = function (grunt) {
                 options: {
                     sourcemap: 'none'
                 },
-                files: {}
+                files: {
+                    'css/home.css': 'sass/home.scss'
+                }
             }
         },
         watch: {
