@@ -1,12 +1,16 @@
 doctype html
 html
   head
-    title Lyft Game
-    style(type='rel/stylesheet', src='css/home.css')
-  body
-    section.js-map
+    meta(charset='utf-8')
 
-    aside
+    title Lyft Game
+
+    link(rel='stylesheet', href='css/home.css')
+  body
+    .body-wrapper
+      section.js-map
+
+      aside
 
     script#template-user-profile(type='x-tmpl-mustache')
       include user_profile
