@@ -9,9 +9,15 @@ module.exports = function (grunt) {
                 options: {
                     bare: true,
                     join: true
+                },
+                files: {
+                    'js/main.js': [
+                        'coffee/users.coffee',
+                        'coffee/home_presenter.coffee',
+                        'coffee/main.coffee'
+                    ]
                 }
-            },
-            files: {}
+            }
         },
         jade: {
             dist: {
@@ -36,7 +42,7 @@ module.exports = function (grunt) {
         watch: {
             coffee: {
                 files: 'coffee/**/*.coffee',
-                tasks: ['coffeelint', 'coffee'],
+                tasks: ['coffee'],
                 options: {
                     interrupt: true,
                     atBegin: true

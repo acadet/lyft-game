@@ -19,6 +19,7 @@ body {
 
   section, aside {
     display: inline-block;
+    vertical-align: top;
   }
 }
 
@@ -30,17 +31,15 @@ section {
 }
 
 aside {
-  width: 30% - 1%;
+  width: 30%;
   height: 100%;
 }
 
 .user-profile-wrapper {
-  width: 25%;
-  height: 25%;
+  width: 50%;
+  height: 50%;
   padding: 10px;
   box-sizing: border-box;
-
-  overflow: auto;
 
   .user-profile {
     width: 100%;
@@ -48,51 +47,63 @@ aside {
     padding: 5px 10px;
     box-sizing: border-box;
 
+    overflow: auto;
     background: $white;
-
     text-align: center;
   }
 }
 
 .user-profile-wrapper .user-profile {
   .profile-picture {
-    width: 200px;
-    height: 200px;
-    padding: 5px;
+    width: 50px;
+    height: 50px;
+    padding: 4px;
+    margin: 10px 0;
 
     @include border-radius(50%);
     border: 1px solid $gray;
+    box-shadow: 0 0 0 3px white, 0 0 0 4px $gray;
+  }
 
-    img {
-      width: 100%;
-      height: 100%;
+  .name {
+    margin: 0;
 
-      @include border-radius(50%);
-      border: 1px solid $gray;
+    font: {
+      size: 1em;
     }
+    color: $pink;
   }
 
   .about {
-    margin: 1em 0;
+    margin: 5px 0 0 0;
     padding: 0;
+    box-sizing: border-box;
 
     list-style-type: none;
 
     li {
-      margin: 5px 0;
+      @include display(flex);
+      @include align-items(center);
+
+      margin: 3px 0;
       padding: 0;
 
+      text-align: left;
+
       > * {
-        display: inline-block;
+        display: inline;
         vertical-align: middle;
       }
 
       img {
-        padding: 0 10px 0 0;
+        padding: 0 5px 0 0;
       }
 
       p {
+        @include flex(1);
+
         color: $black;
+        font-size: 0.7em;
       }
     }
   }

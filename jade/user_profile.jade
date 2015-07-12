@@ -1,15 +1,16 @@
 .user-profile-wrapper
   .user-profile
-    .profile-picture
-      img(src='{{profile_picture_src}}')
+    img.profile-picture(src='imgs/users/{{profile_picture_src}}')
+
+    p.name {{name}}
 
     ul.about
       li.location
         img(src='imgs/ic_location.png')
-        p From {{location}}
+        p {{location}}
       li.music
         img(src='imgs/ic_music.png')
-        p Listening to {{music}}
+        p {{music}}
       li.likes
         img(src='imgs/ic_likes.png')
-        p When I am not driving I like {{likes}}
+        p {{likes}}

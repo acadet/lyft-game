@@ -10,7 +10,11 @@ html
     .body-wrapper
       section.js-map
 
-      aside
+      aside.js-user-list
 
     script#template-user-profile(type='x-tmpl-mustache')
       include user_profile
+
+    script(type='text/javascript', src='bower_components/jquery/dist/jquery.min.js')
+    script(type='text/javascript', src='bower_components/mustache.js/mustache.min.js')
+    script(type='text/javascript', src='js/main.js')
