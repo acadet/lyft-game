@@ -19,7 +19,7 @@ module.exports = function (grunt) {
                     pretty: true
                 },
                 files: {
-                    'html/home.html': 'jade/home.jade'
+                    'index.html': 'jade/home.jade'
                 }
             }
         },
