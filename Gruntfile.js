@@ -13,6 +13,7 @@ module.exports = function (grunt) {
                 files: {
                     'js/main.js': [
                         'coffee/users.coffee',
+                        'coffee/grid.coffee',
                         'coffee/home_presenter.coffee',
                         'coffee/main.coffee'
                     ]

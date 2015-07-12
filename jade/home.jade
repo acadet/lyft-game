@@ -8,7 +8,8 @@ html
     link(rel='stylesheet', href='css/home.css')
   body
     .body-wrapper
-      section.js-map
+      section
+        svg.js-map
 
       aside.js-user-list
 
@@ -16,5 +17,6 @@ html
       include user_profile
 
     script(type='text/javascript', src='bower_components/jquery/dist/jquery.min.js')
+    script(type='text/javascript', src='bower_components/snap.svg/dist/snap.svg-min.js')
     script(type='text/javascript', src='bower_components/mustache.js/mustache.min.js')
     script(type='text/javascript', src='js/main.js')

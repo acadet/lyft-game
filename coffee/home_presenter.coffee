@@ -1,7 +1,6 @@
 class HomePresenter
   constructor: () ->
+    @grid = new Grid('.js-map', 200, 10)
 
   onStart: () ->
-    @userProfileTemplate = $('#template-user-profile').html()
-    for u in USERS
-      $('.js-user-list').append(Mustache.render(@userProfileTemplate, u))
+    @grid.render()
