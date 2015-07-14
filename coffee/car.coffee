@@ -1,12 +1,14 @@
 class Car
   @MARGIN = 3
+  @SPEED = 2
 
   class StreetDirection
     @CROSS = 0
     @HORIZONTAL = 1
     @VERTICAL = 2
 
-  constructor: (grid) ->
+  constructor: (source, grid) ->
+    @source = $(source)
     @grid = grid
     @currentPosition = @grid.randomCrossStreets()
     @currentStreetDirection = StreetDirection.CROSS
@@ -17,7 +19,23 @@ class Car
   _comparePoints: (p1, p2) ->
     return @_compareDouble(p1.getX(), p2.getX()) and @_compareDouble(p1.getY(), p2.getY())
 
+  _setCarPosition: (position) ->
+    @source.css
+      top: position.getY()
+      left: position.getX()
+
   _animateTo: (point, callback) ->
+    if @_comparePoints(@currentPosition, point)
+      callback()
+    else
+      setTimeout(
+                  () =>
+                    @currentPosition.setX(@currentPosition.getX() + 1)
+                    @currentPosition.setY(@currentPosition.getY() + 1)
+                    @_animateTo(point, callback)
+                ,
+                  1 / Car.SPEED
+                )
 
   moveTo: (target) ->
     return if not @grid.isWithinAStreet(target)
