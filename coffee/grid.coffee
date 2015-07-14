@@ -13,5 +13,5 @@ class Grid
 
     for i in [0..Math.max(horizontalGutterNumber, verticalGutterNumber)]
       z = i * @blockSize - @streetSize / 2
-      horizontalStreet = @snap.rect(0, z, width, @streetSize) unless i >= horizontalGutterNumber
-      verticalStreet = @snap.rect(z, 0, @streetSize, height) unless i >= verticalGutterNumber
+      horizontalStreet = @snap.rect(0, z, width, @streetSize) unless i > horizontalGutterNumber
+      verticalStreet = @snap.rect(z, 0, @streetSize, height) unless i > verticalGutterNumber
