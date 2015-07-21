@@ -1,6 +1,5 @@
 class Car
-  @MARGIN = 3
-  @SPEED = 2
+  @SPEED: 2
 
   class StreetDirection
     @CROSS = 0
@@ -13,19 +12,13 @@ class Car
     @currentPosition = @grid.randomCrossStreets()
     @currentStreetDirection = StreetDirection.CROSS
 
-  _compareDouble: (a, b) ->
-    return Math.abs(a - b) <= Car.MARGIN
-
-  _comparePoints: (p1, p2) ->
-    return @_compareDouble(p1.getX(), p2.getX()) and @_compareDouble(p1.getY(), p2.getY())
-
   _setCarPosition: (position) ->
     @source.css
       top: position.getY()
       left: position.getX()
 
   _animateTo: (point, callback) ->
-    if @_comparePoints(@currentPosition, point)
+    if PointHelper.compare(@currentPosition, point)
       callback()
     else
       setTimeout(
@@ -40,7 +33,7 @@ class Car
   moveTo: (target) ->
     return if not @grid.isWithinAStreet(target)
 
-    if @_comparePoints(@currentPosition, target)
+    if PointHelper.compare(@currentPosition, target)
       # I am on spot
       if @grid.isACrossStreet(@currentPosition)
         @currentStreetDirection = StreetDirection.CROSS
@@ -64,7 +57,7 @@ class Car
     else if @currentStreetDirection is StreetDirection.HORIZONTAL
       horizontalMove()
     else
-      if @_compareDouble(@currentPosition.getX(), target.getX())
+      if DoubleHelper.compare(@currentPosition.getX(), target.getX())
         verticalMove()
       else
         horizontalMove()

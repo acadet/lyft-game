@@ -8,3 +8,4 @@ class Point
 
   getY: () ->
     @y
+

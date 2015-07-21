@@ -12,6 +12,8 @@ module.exports = function (grunt) {
                 },
                 files: {
                     'js/main.js': [
+                        'coffee/double_helper.coffee',
+                        'coffee/point_helper.coffee',
                         'coffee/users.coffee',
                         'coffee/point.coffee',
                         'coffee/car.coffee',
