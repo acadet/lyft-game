@@ -1,30 +1,43 @@
 class Car
-  @SPEED: 2
+  @SPEED = 2
 
   class StreetDirection
     @CROSS = 0
     @HORIZONTAL = 1
     @VERTICAL = 2
 
+  class Orientation
+    @TOP = 0
+    @RIGHT = 1
+    @BOTTOM = 2
+    @LEFT = 3
+
   constructor: (source, grid) ->
     @source = $(source)
     @grid = grid
     @currentPosition = @grid.randomCrossStreets()
+    @_refreshPosition()
     @currentStreetDirection = StreetDirection.CROSS
 
-  _setCarPosition: (position) ->
-    @source.css
-      top: position.getY()
-      left: position.getX()
+  _refreshPosition: () ->
+    @source.attr('x', @currentPosition.getX())
+    @source.attr('y', @currentPosition.getY())
 
-  _animateTo: (point, callback) ->
+  _animateTo: (point, direction, orientation, callback) ->
     if PointHelper.compare(@currentPosition, point)
       callback()
     else
       setTimeout(
                   () =>
-                    @currentPosition.setX(@currentPosition.getX() + 1)
-                    @currentPosition.setY(@currentPosition.getY() + 1)
+                    k = -1
+                    if orientation is Orientation.BOTTOM or orientation is Orientation.RIGHT
+                      k = 1
+          
+                    if direction is StreetDirection.HORIZONTAL
+                      @currentPosition.setX(@currentPosition.getX() + k)
+                    else
+                      @currentPosition.setY(@currentPosition.getY() + k)
+                    @_refreshPosition()
                     @_animateTo(point, callback)
                 ,
                   1 / Car.SPEED
@@ -43,14 +56,14 @@ class Car
 
     verticalMove = () =>
       if @currentPosition.getY() <= target.getY()
-        @_animateTo(@grid.getNextVerticalCross(@currentPosition), callback)
+        @_animateTo(@grid.getNextVerticalCross(@currentPosition), StreetDirection.VERTICAL, callback)
       else
-        @_animateTo(@grid.getPrevVerticalCross(@currentPosition), callback)
+        @_animateTo(@grid.getPrevVerticalCross(@currentPosition), StreetDirection.VERTICAL, callback)
     horizontalMove = () =>
       if @currentPosition.getX() <= target.getX()
-        @_animateTo(@grid.getNextHorizontalCross(@currentPosition), callback)
+        @_animateTo(@grid.getNextHorizontalCross(@currentPosition), StreetDirection.HORIZONTAL, callback)
       else
-        @_animateTo(@grid.getPrevHorizontalCross(@currentPosition), callback)
+        @_animateTo(@grid.getPrevHorizontalCross(@currentPosition), StreetDirection.HORIZONTAL, callback)
 
     if @currentStreetDirection is StreetDirection.VERTICAL
       verticalMove()

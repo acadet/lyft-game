@@ -6,6 +6,11 @@ class Point
   getX: () ->
     @x
 
+  setX: (value) ->
+    @x = value
+
   getY: () ->
     @y
 
+  setY: (value) ->
+    @y = value

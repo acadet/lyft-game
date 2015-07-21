@@ -1,6 +1,6 @@
 class DoubleHelper
-  @TOLERANCE: 3
+  @TOLERANCE = 3
 
-  @compare: (d1, d2, tolerance) ->
+  @compare: (a, b, tolerance) ->
     tolerance = @TOLERANCE unless tolerance?
     Math.abs(a - b) <= tolerance
