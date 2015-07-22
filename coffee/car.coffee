@@ -18,6 +18,7 @@ class Car
     @currentPosition = @grid.randomCrossStreets()
     @_refreshPosition()
     @currentStreetDirection = StreetDirection.CROSS
+    @currentTimer = null
 
   _refreshPosition: () ->
     @source.attr('x', @currentPosition.getX())
@@ -27,21 +28,21 @@ class Car
     if PointHelper.compare(@currentPosition, point, 0)
       callback()
     else
-      setTimeout(
-                  () =>
-                    k = -1
-                    if orientation is Orientation.BOTTOM or orientation is Orientation.RIGHT
-                      k = 1
+      @currentTimer = setTimeout(
+                                  () =>
+                                    k = -1
+                                    if orientation is Orientation.BOTTOM or orientation is Orientation.RIGHT
+                                      k = 1
 
-                    if direction is StreetDirection.HORIZONTAL
-                      @currentPosition.setX(@currentPosition.getX() + k)
-                    else
-                      @currentPosition.setY(@currentPosition.getY() + k)
-                    @_refreshPosition()
-                    @_animateTo(point, direction, orientation, callback)
-                ,
-                  1 / Car.SPEED
-                )
+                                    if direction is StreetDirection.HORIZONTAL
+                                      @currentPosition.setX(@currentPosition.getX() + k)
+                                    else
+                                      @currentPosition.setY(@currentPosition.getY() + k)
+                                    @_refreshPosition()
+                                    @_animateTo(point, direction, orientation, callback)
+                                ,
+                                  1 / Car.SPEED
+                                )
 
   moveTo: (target) ->
     return unless @grid.isWithinAStreet(target)
@@ -49,6 +50,10 @@ class Car
     if PointHelper.compare(@currentPosition, target, @grid.getStreetSize())
       # I am on spot
       return
+
+    if @currentTimer?
+      clearTimeout(@currentTimer)
+      @currentTimer = null
 
     if @grid.isACrossStreet(@currentPosition)
       @currentStreetDirection = StreetDirection.CROSS
@@ -62,7 +67,6 @@ class Car
 
       if @currentPosition.getY() <= target.getY()
         p = @grid.getNextHorizontalCross(@currentPosition) if needMilestone
-        console.log 'moving vertical bottom'
         @_animateTo(
                      p
                      StreetDirection.VERTICAL,
@@ -71,7 +75,6 @@ class Car
                    )
       else
         p = @grid.getPrevHorizontalCross(@currentPosition) if needMilestone
-        console.log 'moving vertical top'
         @_animateTo(
                      p,
                      StreetDirection.VERTICAL,
@@ -84,7 +87,6 @@ class Car
       needMilestone = not DoubleHelper.compare(alignedTarget.getY(), @currentPosition.getY())
       if @currentPosition.getX() <= target.getX()
         p = @grid.getNextVerticalCross(@currentPosition) if needMilestone
-        console.log 'moving horizontal right'
         @_animateTo(
                      p,
                      StreetDirection.HORIZONTAL,
@@ -93,7 +95,6 @@ class Car
                    )
       else
         p = @grid.getPrevVerticalCross(@currentPosition) if needMilestone
-        console.log 'moving horizontal left'
         @_animateTo(
                      p,
                      StreetDirection.HORIZONTAL,
