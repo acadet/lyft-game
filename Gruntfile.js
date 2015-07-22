@@ -16,8 +16,8 @@ module.exports = function (grunt) {
                         'coffee/point_helper.coffee',
                         'coffee/users.coffee',
                         'coffee/point.coffee',
-                        'coffee/car.coffee',
                         'coffee/grid.coffee',
+                        'coffee/car.coffee',
                         'coffee/home_presenter.coffee',
                         'coffee/main.coffee'
                     ]
