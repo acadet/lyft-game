@@ -1,0 +1,3 @@
+class Balloon
+  constructor: (grid) ->
+    
