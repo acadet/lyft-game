@@ -114,7 +114,7 @@ class Car
       else if DoubleHelper.compare(@currentPosition.getY(), alignedTarget.getY())
         horizontalMove()
       else
-        if Math.random() < 0.5
+        if @grid.shouldIMoveHorizontal(@currentPosition, alignedTarget)
           horizontalMove()
         else
           verticalMove()
