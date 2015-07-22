@@ -25,7 +25,7 @@ class Car
     @source.attr('y', @currentPosition.getY())
 
   _animateTo: (point, direction, orientation, callback) ->
-    if PointHelper.compare(@currentPosition, point, 0)
+    if PointHelper.compare(@currentPosition, point)
       callback()
     else
       @currentTimer = setTimeout(

@@ -27,44 +27,30 @@ class Grid
   isWithinAStreet: (position) ->
     for i in [0...@verticalStreetNumber]
       x = i * @blockSize
-      return true if DoubleHelper.compare(position.getX(), x, @streetSize / 2)
+      return true if DoubleHelper.compare(position.getX(), x, @streetSize)
 
     for j in [0...@horizontalStreetNumber]
       y = j * @blockSize
-      return true if DoubleHelper.compare(position.getY(), y, @streetSize / 2)
+      return true if DoubleHelper.compare(position.getY(), y, @streetSize)
 
     return false
-#    semiStreet = @streetSize / 2
-#    a = position.getX() % @blockSize
-#    return true unless (a < (@blockSize - semiStreet) and a > semiStreet)
-#    b = position.getY() % @blockSize
-#    return true unless (b < (@blockSize - semiStreet) and b > semiStreet)
-#    return false
-  #return position.getX() % @blockSize <= @streetSize or position.getY() % @blockSize <= @streetSize
 
   isACrossStreet: (position) ->
     a = false
     for i in [0...@verticalStreetNumber]
       x = i * @blockSize
-      if DoubleHelper.compare(position.getX(), x, @streetSize / 2)
+      if DoubleHelper.compare(position.getX(), x, @streetSize)
         a = true
         break
 
     b = false
     for j in [0...@horizontalStreetNumber]
       y = j * @blockSize
-      if DoubleHelper.compare(position.getY(), y, @streetSize / 2)
+      if DoubleHelper.compare(position.getY(), y, @streetSize)
         b = true
         break
 
     return a and b
-#    semiStreet = @streetSize / 2
-#    a = position.getX() % @blockSize
-#    return false if (a < (@blockSize - semiStreet) and a > semiStreet)
-#    b = position.getY() % @blockSize
-#    return false if (b < (@blockSize - semiStreet) and b > semiStreet)
-#    return true
-  #return position.getX() % @blockSize <= @streetSize and position.getY() % @blockSize <= @streetSize
 
   getStreetSize: () ->
     @streetSize
@@ -100,7 +86,7 @@ class Grid
     i = Math.ceil(position.getX() / @blockSize) - 1
     return position if i < 0
     return new Point(i * @blockSize, position.getY())
-  
+
   getNextVerticalCross: (position) ->
     i = Math.ceil(position.getX() / @blockSize) + 1
     return position if i >= @verticalStreetNumber
