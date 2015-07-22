@@ -7,9 +7,9 @@ class Car
     @VERTICAL = 2
 
   class Orientation
-    @TOP = 0
+    @UP = 0
     @RIGHT = 1
-    @BOTTOM = 2
+    @DOWN = 2
     @LEFT = 3
 
   constructor: (source, grid) ->
@@ -34,7 +34,7 @@ class Car
                                   () =>
                                     @currentTimer = null
                                     k = -1
-                                    if orientation is Orientation.BOTTOM or orientation is Orientation.RIGHT
+                                    if orientation is Orientation.DOWN or orientation is Orientation.RIGHT
                                       k = 1
 
                                     if direction is StreetDirection.HORIZONTAL
@@ -71,7 +71,7 @@ class Car
         @_animateTo(
                      p
                      StreetDirection.VERTICAL,
-                     Orientation.BOTTOM,
+                     Orientation.DOWN,
                      callback
                    )
       else
@@ -79,7 +79,7 @@ class Car
         @_animateTo(
                      p,
                      StreetDirection.VERTICAL,
-                     Orientation.TOP,
+                     Orientation.UP,
                      callback
                    )
       @currentStreetDirection = StreetDirection.VERTICAL
