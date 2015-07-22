@@ -14,6 +14,8 @@ class Car
 
   constructor: (source, grid) ->
     @source = $(source)
+    @carWidth = parseInt(@source.attr('width'))
+    @carHeight = parseInt(@source.attr('height'))
     @grid = grid
     @currentPosition = @grid.randomCrossStreets()
     @_refreshPosition()
@@ -21,8 +23,8 @@ class Car
     @currentTimer = null
 
   _refreshPosition: () ->
-    @source.attr('x', @currentPosition.getX())
-    @source.attr('y', @currentPosition.getY())
+    @source.attr('x', @currentPosition.getX() - @carWidth / 2)
+    @source.attr('y', @currentPosition.getY() - @carHeight / 2)
 
   _animateTo: (point, direction, orientation, callback) ->
     if PointHelper.compare(@currentPosition, point)
