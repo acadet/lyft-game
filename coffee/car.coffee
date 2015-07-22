@@ -53,6 +53,7 @@ class Car
       return
 
     if @currentTimer?
+      # Handle interruptions
       clearTimeout(@currentTimer)
       @currentTimer = null
 
@@ -86,6 +87,7 @@ class Car
     horizontalMove = () =>
       p = alignedTarget
       needMilestone = not DoubleHelper.compare(alignedTarget.getY(), @currentPosition.getY())
+
       if @currentPosition.getX() <= target.getX()
         p = @grid.getNextVerticalCross(@currentPosition) if needMilestone
         @_animateTo(

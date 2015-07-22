@@ -14,3 +14,6 @@ class Point
 
   setY: (value) ->
     @y = value
+
+  toString: () ->
+    "#{@x} - #{@y}"

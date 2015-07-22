@@ -73,22 +73,30 @@ class Grid
     return new Point(x, y)
 
   getPrevHorizontalCross: (position) ->
-    j = Math.ceil(position.getY() / @blockSize) - 1
+    y = position.getY()
+    y -= (y % @blockSize) if y % @blockSize <= @streetSize / 2
+    j = Math.ceil(y / @blockSize) - 1
     return position if j < 0
     return new Point(position.getX(), j * @blockSize)
 
   getNextHorizontalCross: (position) ->
-    j = Math.ceil(position.getY() / @blockSize) + 1
+    y = position.getY()
+    y -= (y % @blockSize) if y % @blockSize <= @streetSize / 2
+    j = Math.ceil(y / @blockSize) + 1
     return position if j >= @horizontalStreetNumber
     return new Point(position.getX(), j * @blockSize)
 
   getPrevVerticalCross: (position) ->
-    i = Math.ceil(position.getX() / @blockSize) - 1
+    x = position.getX()
+    x -= (x % @blockSize) if x % @blockSize <= @streetSize / 2
+    i = Math.ceil(x / @blockSize) - 1
     return position if i < 0
     return new Point(i * @blockSize, position.getY())
 
   getNextVerticalCross: (position) ->
-    i = Math.ceil(position.getX() / @blockSize) + 1
+    x = position.getX()
+    x -= (x % @blockSize) if x % @blockSize <= @streetSize / 2
+    i = Math.ceil(x / @blockSize) + 1
     return position if i >= @verticalStreetNumber
     return new Point(i * @blockSize, position.getY())
 
