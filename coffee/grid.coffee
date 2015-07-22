@@ -13,6 +13,9 @@ class Grid
     @verticalStreetNumber = Math.floor(@gridWidth / @blockSize) + 1
     @horizontalStreetNumber = Math.floor(@gridHeight / @blockSize) + 1
 
+  getSnap: () ->
+    @snap
+
   render: () ->
     for i in [0...Math.max(@horizontalStreetNumber, @verticalStreetNumber)]
       z = i * @blockSize - @streetSize / 2
@@ -31,10 +34,9 @@ class Grid
     for i in [0...@verticalStreetNumber]
       for j in [0...@horizontalStreetNumber]
         square = @snap.circle(i * @blockSize, j * @blockSize, @streetSize)
-        square.attr(fill: Grid.FILL_COLOR)
-
-
-  # TODO: customize streets
+        square.attr(
+                     fill: Grid.FILL_COLOR
+                   )
 
   # Returns a random cross street junction (via a point)
   randomCrossStreets: () ->

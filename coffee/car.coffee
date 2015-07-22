@@ -60,12 +60,11 @@ class Car
     if @grid.isACrossStreet(@currentPosition)
       @currentStreetDirection = StreetDirection.CROSS
 
-    alignedTarget = @grid.realign(target)
     callback = () => @_moveTo(target)
 
     verticalMove = () =>
-      p = alignedTarget
-      needMilestone = not DoubleHelper.compare(alignedTarget.getX(), @currentPosition.getX())
+      p = target
+      needMilestone = not DoubleHelper.compare(target.getX(), @currentPosition.getX())
 
       if @currentPosition.getY() <= target.getY()
         p = @grid.getNextHorizontalCross(@currentPosition) if needMilestone
@@ -85,8 +84,8 @@ class Car
                    )
       @currentStreetDirection = StreetDirection.VERTICAL
     horizontalMove = () =>
-      p = alignedTarget
-      needMilestone = not DoubleHelper.compare(alignedTarget.getY(), @currentPosition.getY())
+      p = target
+      needMilestone = not DoubleHelper.compare(target.getY(), @currentPosition.getY())
 
       if @currentPosition.getX() <= target.getX()
         p = @grid.getNextVerticalCross(@currentPosition) if needMilestone
@@ -112,16 +111,16 @@ class Car
       horizontalMove()
     else
       # I am on a junction, I can move in both directions
-      if DoubleHelper.compare(@currentPosition.getX(), alignedTarget.getX())
+      if DoubleHelper.compare(@currentPosition.getX(), target.getX())
         verticalMove()
-      else if DoubleHelper.compare(@currentPosition.getY(), alignedTarget.getY())
+      else if DoubleHelper.compare(@currentPosition.getY(), target.getY())
         horizontalMove()
       else
-        if @grid.shouldIMoveHorizontal(@currentPosition, alignedTarget)
+        if @grid.shouldIMoveHorizontal(@currentPosition, target)
           horizontalMove()
         else
           verticalMove()
 
   requestMove: (target) ->
     return unless @grid.isWithinAStreet(target)
-    @_moveTo(target)
+    @_moveTo(@grid.realign(target))
