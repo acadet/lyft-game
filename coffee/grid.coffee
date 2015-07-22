@@ -1,4 +1,7 @@
 class Grid
+  @FILL_COLOR = '#fff'
+  @STROKE_COLOR = '#EAE2D8'
+
   constructor: (source, blockSize, streetSize) ->
     @source = $(source)
     @snap = Snap(source)
@@ -15,6 +18,22 @@ class Grid
       z = i * @blockSize - @streetSize / 2
       horizontalStreet = @snap.rect(0, z, @gridWidth, @streetSize) unless i >= @horizontalStreetNumber
       verticalStreet = @snap.rect(z, 0, @streetSize, @gridHeight) unless i >= @verticalStreetNumber
+
+      horizontalStreet.attr(
+                             fill: Grid.FILL_COLOR
+                             stroke: Grid.STROKE_COLOR
+                           )
+      verticalStreet.attr(
+                           fill: Grid.FILL_COLOR
+                           stroke: Grid.STROKE_COLOR
+                         )
+
+    for i in [0...@verticalStreetNumber]
+      for j in [0...@horizontalStreetNumber]
+        square = @snap.circle(i * @blockSize, j * @blockSize, @streetSize)
+        square.attr(fill: Grid.FILL_COLOR)
+
+
   # TODO: customize streets
 
   # Returns a random cross street junction (via a point)
