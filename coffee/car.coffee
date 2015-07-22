@@ -1,5 +1,5 @@
 class Car
-  @SPEED = 2
+  @SPEED = 10 * 1000
 
   class StreetDirection
     @CROSS = 0
