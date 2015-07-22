@@ -32,7 +32,7 @@ class Car
                     k = -1
                     if orientation is Orientation.BOTTOM or orientation is Orientation.RIGHT
                       k = 1
-          
+
                     if direction is StreetDirection.HORIZONTAL
                       @currentPosition.setX(@currentPosition.getX() + k)
                     else
@@ -44,32 +44,56 @@ class Car
                 )
 
   moveTo: (target) ->
-    return if not @grid.isWithinAStreet(target)
+    return unless @grid.isWithinAStreet(target)
 
     if PointHelper.compare(@currentPosition, target)
       # I am on spot
-      if @grid.isACrossStreet(@currentPosition)
-        @currentStreetDirection = StreetDirection.CROSS
       return
+
+    if @grid.isACrossStreet(@currentPosition)
+      @currentStreetDirection = StreetDirection.CROSS
 
     callback = () => @moveTo(target)
 
     verticalMove = () =>
       if @currentPosition.getY() <= target.getY()
-        @_animateTo(@grid.getNextVerticalCross(@currentPosition), StreetDirection.VERTICAL, callback)
+        @_animateTo(
+                     @grid.getNextVerticalCross(@currentPosition),
+                     StreetDirection.VERTICAL,
+                     Orientation.BOTTOM,
+                     callback
+                   )
       else
-        @_animateTo(@grid.getPrevVerticalCross(@currentPosition), StreetDirection.VERTICAL, callback)
+        @_animateTo(
+                     @grid.getPrevVerticalCross(@currentPosition),
+                     StreetDirection.VERTICAL,
+                     Orientation.TOP,
+                     callback
+                   )
+      @currentStreetDirection = StreetDirection.VERTICAL
     horizontalMove = () =>
       if @currentPosition.getX() <= target.getX()
-        @_animateTo(@grid.getNextHorizontalCross(@currentPosition), StreetDirection.HORIZONTAL, callback)
+        @_animateTo(
+                     @grid.getNextHorizontalCross(@currentPosition),
+                     StreetDirection.HORIZONTAL,
+                     Orientation.RIGHT
+                     callback
+                   )
       else
-        @_animateTo(@grid.getPrevHorizontalCross(@currentPosition), StreetDirection.HORIZONTAL, callback)
+        @_animateTo(
+                     @grid.getPrevHorizontalCross(@currentPosition),
+                     StreetDirection.HORIZONTAL,
+                     Orientation.LEFT,
+                     callback
+                   )
+      @currentStreetDirection = StreetDirection.HORIZONTAL
 
     if @currentStreetDirection is StreetDirection.VERTICAL
       verticalMove()
     else if @currentStreetDirection is StreetDirection.HORIZONTAL
       horizontalMove()
     else
+      # I am on a junction, I can move in both directions
       if DoubleHelper.compare(@currentPosition.getX(), target.getX())
         verticalMove()
       else
