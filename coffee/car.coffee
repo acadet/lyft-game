@@ -32,6 +32,7 @@ class Car
     else
       @currentTimer = setTimeout(
                                   () =>
+                                    @currentTimer = null
                                     k = -1
                                     if orientation is Orientation.BOTTOM or orientation is Orientation.RIGHT
                                       k = 1
@@ -46,9 +47,7 @@ class Car
                                   1 / Car.SPEED
                                 )
 
-  moveTo: (target) ->
-    return unless @grid.isWithinAStreet(target)
-
+  _moveTo: (target) ->
     if PointHelper.compare(@currentPosition, target, @grid.getStreetSize())
       # I am on spot
       return
@@ -61,7 +60,7 @@ class Car
       @currentStreetDirection = StreetDirection.CROSS
 
     alignedTarget = @grid.realign(target)
-    callback = () => @moveTo(target)
+    callback = () => @_moveTo(target)
 
     verticalMove = () =>
       p = alignedTarget
@@ -120,3 +119,7 @@ class Car
           horizontalMove()
         else
           verticalMove()
+
+  requestMove: (target) ->
+    return unless @grid.isWithinAStreet(target)
+    @_moveTo(target)

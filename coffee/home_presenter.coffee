@@ -7,4 +7,4 @@ class HomePresenter
     @car = new Car('.js-car', @grid)
 
     $('.js-map').on 'click', (e) =>
-      @car.moveTo(new Point(e.pageX, e.pageY))
+      @car.requestMove(new Point(e.pageX, e.pageY))
