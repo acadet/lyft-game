@@ -10,6 +10,7 @@ class HomePresenter
     @grid.render()
     @_initCar()
     @rideEngine = new RideEngine(@grid, @car, 5 * 1000, 10 * 1000)
+    EventBus.get('RideEngine').register(OnPickupEvent.NAME, (z) => @onPickup(z))
     @rideEngine.watch (z) => @onPickup(z)
     @rideEngine.start()
 
@@ -18,5 +19,5 @@ class HomePresenter
     $('.js-map').on 'click', (e) =>
       @car.requestMove(new Point(e.pageX, e.pageY))
 
-  onPickup: (zone) ->
+  onPickup: (e) ->
     @userEngine.showRandom()

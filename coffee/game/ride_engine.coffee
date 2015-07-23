@@ -6,16 +6,16 @@ class RideEngine
     @duration = duration
     @generator = null
 
-  _onCarMove: () ->
+  _onCarMove: (e) ->
     for k, v of @pickupZones
       if v.zone.isNearMe(@car.getCurrentPosition())
         clearTimeout(v.timer)
         v.zone.hide()
-        @listener(v.zone) if @listener?
+        EventBus.get('RideEngine').post(OnPickupEvent.NAME, new OnPickupEvent(v.zone))
         setTimeout(() => delete @pickupZones[k])
 
   start: () ->
-    @car.watch(() => @_onCarMove())
+    EventBus.get('Car').register OnCarMoveEvent.NAME, (e) => @_onCarMove(e)
     @pickupZones = {}
     id = 0
     @generator = setInterval(
@@ -36,8 +36,4 @@ class RideEngine
                             )
 
   stop: () ->
-    @car.unwatch()
     clearInterval(@generator)
-
-  watch: (listener) ->
-    @listener = listener
