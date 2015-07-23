@@ -33,7 +33,7 @@ class RideEngine
       if zone.isNearMe(@car.getCurrentPosition())
         zone.hide()
         EventBus.get('RideEngine').post(PickupEvent.NAME, new PickupEvent(zone))
-        @dropZones[id] = new DropZone(id, @grid, @duration)
+        @dropZones[id] = new DropZone(id, @grid, @duration, zone.getColor())
         pickupZoneToRemove.push id # Remove from current pickup zones
 
     for id, zone of @dropZones

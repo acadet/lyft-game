@@ -4,16 +4,15 @@ class Zone
   @ANIMATION_DURATION_MS =
     @ANIMATION_DELAY_MS = 3 * 1000
 
-  constructor: (id, grid, imgExtension, duration) ->
+  constructor: (id, grid, duration) ->
     @id = id
     @grid = grid
     @duration = duration
 
     # Set marker
     @position = @grid.randomPosition()
-    colorIndex = Math.round(Math.random() * (Zone.COLORS.length - 1))
     @icon = @grid.getSnap().image(
-                                   "imgs/#{Zone.COLORS[colorIndex]}-#{imgExtension}.png",
+                                   "imgs/#{@getColor()}-#{@getImgExtension()}.png",
                                    @position.getX() - Zone.SIZE / 2,
                                    @position.getY() - Zone.SIZE / 2,
                                    Zone.SIZE,
@@ -40,6 +39,12 @@ class Zone
 
   getId: () ->
     @id
+
+  getColor: () ->
+    @color
+
+  getImgExtension: () ->
+    # TO IMPL
 
   postVanished: () ->
     # TO IMPL
