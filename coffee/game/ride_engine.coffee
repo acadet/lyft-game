@@ -8,6 +8,7 @@ class RideEngine
 
     EventBus.get('Car').register CarMoveEvent.NAME, (e) => @onCarMove(e)
     EventBus.get('Zone').register PickupZoneVanishedEvent.NAME, (e) => @onPickupZoneVanished(e)
+    EventBus.get('Zone').register DropZoneVanishedEvent.NAME, (e) => @onDropZoneVanished(e)
 
   start: () ->
     @pickupZones = {}

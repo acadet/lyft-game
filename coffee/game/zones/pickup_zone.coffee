@@ -2,9 +2,6 @@ class PickupZone extends Zone
   constructor: (id, grid, duration) ->
     super(id, grid, duration)
 
-  postVanished: () ->
-    EventBus.get('Zone').post(PickupZoneVanishedEvent.NAME, new PickupZoneVanishedEvent(@getId()))
-
   getColor: () ->
     return @color if @color?
 
@@ -14,3 +11,6 @@ class PickupZone extends Zone
 
   getImgExtension: () ->
     'balloon'
+
+  postVanished: () ->
+    EventBus.get('Zone').post(PickupZoneVanishedEvent.NAME, new PickupZoneVanishedEvent(@getId()))

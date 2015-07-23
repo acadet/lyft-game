@@ -29,8 +29,8 @@ class UserEngine
 
 
   hide: (id) ->
-    @dest.find(@elementSelector).each (e, i) =>
-      a = parseInt(e.data('id'))
-      if id is a
+    @dest.find(@elementSelector).each (i, e) =>
+      parsedId = parseInt($(e).data('id'))
+      if parsedId is id
         delete @active[id]
-        e.remove()
+        $(e).remove()
