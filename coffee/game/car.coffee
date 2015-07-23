@@ -12,6 +12,11 @@ class Car
     @DOWN = 2
     @LEFT = 3
 
+  class Direction
+    @UNKNOWN = 0
+    @HORIZONTAL = 1
+    @VERTICAL = 2
+
   constructor: (source, grid) ->
     @source = $(source)
     @carWidth = parseInt(@source.attr('width'))
@@ -60,6 +65,8 @@ class Car
 
     if @grid.isACrossStreet(@currentPosition)
       @currentStreetDirection = StreetDirection.CROSS
+    else
+      @latestDirectionFromJunction = Direction.UNKNOWN
 
     callback = () => @_moveTo(target)
 
@@ -117,9 +124,14 @@ class Car
       else if DoubleHelper.compare(@currentPosition.getY(), target.getY())
         horizontalMove()
       else
-        if @grid.shouldIMoveHorizontal(@currentPosition, target)
+        wasHorizontal = @latestDirectionFromJunction is Direction.HORIZONTAL
+        wasVertical = @latestDirectionFromJunction is Direction.VERTICAL
+        shouldBeHorizontal = @grid.shouldIMoveHorizontal(@currentPosition, target)
+        if (shouldBeHorizontal and (not wasHorizontal)) or ((not shouldBeHorizontal) and wasVertical)
+          @latestDirectionFromJunction = Direction.HORIZONTAL
           horizontalMove()
         else
+          @latestDirectionFromJunction = Direction.VERTICAL
           verticalMove()
 
   getCurrentPosition: () ->
@@ -133,4 +145,5 @@ class Car
 
   requestMove: (target) ->
     return unless @grid.isWithinAStreet(target)
+    @latestDirectionFromJunction = Direction.UNKNOWN
     @_moveTo(@grid.realign(target))
