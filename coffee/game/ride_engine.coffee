@@ -20,7 +20,7 @@ class RideEngine
     id = 0
     @generator = setInterval(
                               () =>
-                                z = new PickupZone(id, @grid)
+                                z = new PickupZone(id, @grid, @duration)
                                 @pickupZones[id] =
                                   zone: z
                                   timer: setTimeout(

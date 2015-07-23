@@ -1,13 +1,16 @@
 class Zone
   @COLORS = ['red', 'blue', 'purple', 'green']
   @SIZE = 30
-  @ANIMATION_DURATION_MS = 500
-  @ANIMATION_DELAY_MS = 5 * 1000
+  @ANIMATION_DURATION_MS =
+    @ANIMATION_DELAY_MS = 3 * 1000
 
-  constructor: (id, grid, imgExtension) ->
+  constructor: (id, grid, imgExtension, duration) ->
     @id = id
     @grid = grid
-    @position = grid.randomPosition()
+    @duration = duration
+
+    # Set marker
+    @position = @grid.randomPosition()
     colorIndex = Math.round(Math.random() * (Zone.COLORS.length - 1))
     @icon = @grid.getSnap().image(
                                    "imgs/#{Zone.COLORS[colorIndex]}-#{imgExtension}.png",
@@ -16,37 +19,20 @@ class Zone
                                    Zone.SIZE,
                                    Zone.SIZE
                                  )
-    @animationTimer = setInterval(
-                                   () => @_animate(),
-                                   Zone.ANIMATION_DELAY_MS
-                                 )
+    @animationTimer = setTimeout(
+                                  () => @_animate(),
+                                  Zone.ANIMATION_DELAY_MS
+                                )
 
   _animate: () ->
-    x = @icon.attr('x')
-    y = @icon.attr('y')
-    size = Zone.SIZE * 3 / 4
     @icon.animate({
-                    x: @position.getX() - size / 2
-                    y: @position.getY() - size / 2
-                    width: size,
-                    height: size
+                    x: @position.getX(),
+                    y: @position.getY(),
+                    width: 0,
+                    height: 0
                   },
-                  Zone.ANIMATION_DURATION_MS
+                  @duration
                  )
-    setTimeout(
-                () =>
-                  @icon.animate(
-                                 {
-                                   x: x,
-                                   y: y,
-                                   width: Zone.SIZE,
-                                   height: Zone.SIZE
-                                 },
-                                 Zone.ANIMATION_DURATION_MS
-                               )
-              ,
-                Zone.ANIMATION_DURATION_MS
-              )
 
   getId: () ->
     @id
@@ -55,5 +41,5 @@ class Zone
     PointHelper.compare(point, @position, @grid.getStreetSize() / 2)
 
   hide: () ->
-    clearInterval(@animationTimer)
+    clearTimeout(@animationTimer)
     @icon.remove()

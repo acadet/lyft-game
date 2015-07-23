@@ -1,3 +1,3 @@
 class DropZone extends Zone
-  constructor: (id, grid) ->
-    super(id, grid, 'marker')
+  constructor: (id, grid, duration) ->
+    super(id, grid, 'marker', duration)
