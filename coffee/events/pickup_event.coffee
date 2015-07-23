@@ -1,5 +1,5 @@
-class OnPickupEvent
-  @NAME = 'OnPickupEvent'
+class PickupEvent
+  @NAME = 'PickupEvent'
 
   constructor: (zone) ->
     @zone = zone

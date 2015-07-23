@@ -1,2 +1,0 @@
-class OnCarMoveEvent
-  @NAME = 'onCarMove'

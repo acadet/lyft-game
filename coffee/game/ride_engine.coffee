@@ -6,20 +6,10 @@ class RideEngine
     @duration = duration
     @generator = null
 
-  _onCarMove: (e) ->
-    toRemove = []
-    for k, v of @pickupZones
-      if v.zone.isNearMe(@car.getCurrentPosition())
-        clearTimeout(v.timer)
-        v.zone.hide()
-        EventBus.get('RideEngine').post(OnPickupEvent.NAME, new OnPickupEvent(v.zone))
-        toRemove.push k # Remove from current pickup zones
-
-    for e in toRemove
-      delete @pickupZones[e]
+    EventBus.get('Car').register CarMoveEvent.NAME, (e) => @onCarMove(e)
+    EventBus.get('Zone').register ZoneVanishedEvent.NAME, (e) => @onZoneVanished(e)
 
   start: () ->
-    EventBus.get('Car').register OnCarMoveEvent.NAME, (e) => @_onCarMove(e)
     @pickupZones = {}
     id = 0
     @generator = setInterval(
@@ -27,13 +17,6 @@ class RideEngine
                                 z = new PickupZone(id, @grid, @duration)
                                 @pickupZones[id] =
                                   zone: z
-                                  timer: setTimeout(
-                                                     () =>
-                                                       z.hide()
-                                                       delete @pickupZones[id]
-                                                   ,
-                                                     @duration
-                                                   )
                                 id++
                             ,
                               @frequency
@@ -41,3 +24,18 @@ class RideEngine
 
   stop: () ->
     clearInterval(@generator)
+
+
+  onCarMove: (e) ->
+    toRemove = []
+    for k, v of @pickupZones
+      if v.zone.isNearMe(@car.getCurrentPosition())
+        v.zone.hide()
+        EventBus.get('RideEngine').post(PickupEvent.NAME, new PickupEvent(v.zone))
+        toRemove.push k # Remove from current pickup zones
+
+    for e in toRemove
+      delete @pickupZones[e]
+
+  onZoneVanished: (e) ->
+    delete @pickupZones[e.getId()]

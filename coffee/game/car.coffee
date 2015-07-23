@@ -46,7 +46,7 @@ class Car
                                       @currentPosition.setX(@currentPosition.getX() + k)
                                     else
                                       @currentPosition.setY(@currentPosition.getY() + k)
-                                    EventBus.get('Car').post(OnCarMoveEvent.NAME, new OnCarMoveEvent())
+                                    EventBus.get('Car').post(CarMoveEvent.NAME, new CarMoveEvent())
                                     @_refreshPosition()
                                     @_animateTo(point, direction, orientation, callback)
                                 ,

@@ -31,7 +31,11 @@ class Zone
                     width: 0,
                     height: 0
                   },
-                  @duration
+                  @duration,
+                  null,
+                   () =>
+                     EventBus.get('Zone').post(ZoneVanishedEvent.NAME, ZoneVanishedEvent(@id))
+                     @hide()
                  )
 
   getId: () ->
@@ -42,4 +46,5 @@ class Zone
 
   hide: () ->
     clearTimeout(@animationTimer)
+    @icon.stop()
     @icon.remove()

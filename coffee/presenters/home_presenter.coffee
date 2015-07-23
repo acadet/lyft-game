@@ -10,8 +10,7 @@ class HomePresenter
     @grid.render()
     @_initCar()
     @rideEngine = new RideEngine(@grid, @car, 5 * 1000, 10 * 1000)
-    EventBus.get('RideEngine').register(OnPickupEvent.NAME, (z) => @onPickup(z))
-    @rideEngine.watch (z) => @onPickup(z)
+    EventBus.get('RideEngine').register(PickupEvent.NAME, (z) => @onPickup(z))
     @rideEngine.start()
 
     @userEngine = new UserEngine('.js-user-list', '.js-user-card')
