@@ -41,7 +41,7 @@ class Zone
     @id
 
   getColor: () ->
-    @color
+    # TO IMPL
 
   getImgExtension: () ->
     # TO IMPL
