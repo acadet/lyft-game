@@ -48,10 +48,13 @@ class Grid
   randomPosition: () ->
     isHorizontal = Math.round(Math.random()) == 0
     if isHorizontal
-      return new Point(Math.round(Math.random() * @gridWidth),
-                       Math.round(Math.random() * (@horizontalStreetNumber - 1)))
+      x = Math.round(Math.random() * @gridWidth)
+      y = Math.round(Math.random() * (@horizontalStreetNumber - 1)) * @blockSize
+      return new Point(x, y)
     else
-      return new Point(Math.round(Math.random() * (@verticalStreetNumber - 1)), Math.round(Math.random() * @gridHeight))
+      x = Math.round(Math.random() * (@verticalStreetNumber - 1)) * @blockSize
+      y = Math.round(Math.random() * @gridHeight)
+      return new Point(x, y)
 
   isWithinAStreet: (position) ->
     for i in [0...@verticalStreetNumber]

@@ -11,8 +11,8 @@ class Balloon
                    c = Math.round(Math.random() * (Balloon.COLORS.length - 1))
                    @grid.getSnap().image(
                                           "imgs/#{Balloon.COLORS[c]}-balloon.png",
-                                          p.getX() / Balloon.SIZE,
-                                          p.getY() / Balloon.SIZE,
+                                          p.getX() - Balloon.SIZE / 2,
+                                          p.getY() - Balloon.SIZE / 2,
                                           Balloon.SIZE,
                                           Balloon.SIZE
                                         )
