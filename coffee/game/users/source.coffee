@@ -1,4 +1,4 @@
-USERS = [
+USER_SOURCE = [
   {
     name: 'Al Pacino',
     profile_picture_src: 'al_pacino.jpeg',

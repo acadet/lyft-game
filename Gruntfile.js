@@ -14,10 +14,11 @@ module.exports = function (grunt) {
                     'js/main.js': [
                         'coffee/helpers/double_helper.coffee',
                         'coffee/helpers/point_helper.coffee',
-                        'coffee/users.coffee',
                         'coffee/structs/point.coffee',
                         'coffee/game/grid.coffee',
                         'coffee/game/car.coffee',
+                        'coffee/game/users/source.coffee',
+                        'coffee/game/users/user_engine.coffee',
                         'coffee/game/zones/zone.coffee',
                         'coffee/game/zones/pickup_zone.coffee',
                         'coffee/game/zones/drop_zone.coffee',

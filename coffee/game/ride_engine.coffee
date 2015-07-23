@@ -11,6 +11,8 @@ class RideEngine
       if v.zone.isNearMe(@car.getCurrentPosition())
         clearTimeout(v.timer)
         v.zone.hide()
+        @listener(v.zone) if @listener?
+        setTimeout(() => delete @pickupZones[k])
 
   start: () ->
     @car.watch(() => @_onCarMove())
@@ -36,3 +38,6 @@ class RideEngine
   stop: () ->
     @car.unwatch()
     clearInterval(@generator)
+
+  watch: (listener) ->
+    @listener = listener
