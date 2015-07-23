@@ -4,7 +4,7 @@ class Zone
   @ANIMATION_DURATION_MS = 500
   @ANIMATION_DELAY_MS = 5 * 1000
 
-  constructor: (grid, imgExtension) ->
+  constructor: (grid, countdownDelay, imgExtension) ->
     @grid = grid
     @position = grid.randomPosition()
     colorIndex = Math.round(Math.random() * (Zone.COLORS.length - 1))
@@ -19,6 +19,10 @@ class Zone
                                    () => @_animate(),
                                    Zone.ANIMATION_DELAY_MS
                                  )
+    @countdown = setTimeout(
+                             () => @hide(),
+                             countdownDelay
+                           )
 
   _animate: () ->
     x = @icon.attr('x')
