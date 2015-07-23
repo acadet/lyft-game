@@ -6,14 +6,16 @@ class UserEngine
     Mustache.parse(@template)
 
     @active = {}
-    @users = {}
+    @activeSize = 0
+    @users = []
     id = 0
     for u in USER_SOURCE
       o = u
-      o.id = id
-      @users[id++] = o
+      o.id = id++
+      @users.push o
 
   showRandom: () ->
+    return if @activeSize is 4 or @activeSize is @users.length
     id = -1
     while (id < 0) or @active.hasOwnProperty(id)
       id = Math.round(Math.random() * (@users.length - 1))
@@ -21,6 +23,7 @@ class UserEngine
     u = @users[id]
     @dest.append(Mustache.render(@template, u))
     @active[id] = u
+    @activeSize++
     return id
 
 
