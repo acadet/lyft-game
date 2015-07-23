@@ -1,15 +1,16 @@
 class RideEngine
-  constructor: (grid, period) ->
+  constructor: (grid, frequency, duration) ->
     @grid = grid
-    @period = period
+    @frequency = frequency
+    @duration = duration
     @generator = null
 
   start: () ->
     @generator = setInterval(
                               () =>
-                                new PickupZone(@grid)
+                                new PickupZone(@grid, @duration)
                             ,
-                              @period
+                              @frequency
                             )
 
   stop: () ->

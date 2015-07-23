@@ -18,9 +18,9 @@ module.exports = function (grunt) {
                         'coffee/structs/point.coffee',
                         'coffee/game/grid.coffee',
                         'coffee/game/car.coffee',
-                        'coffee/game/zone.coffee',
-                        'coffee/game/pickup_zone.coffee',
-                        'coffee/game/drop_zone.coffee',
+                        'coffee/game/zones/zone.coffee',
+                        'coffee/game/zones/pickup_zone.coffee',
+                        'coffee/game/zones/drop_zone.coffee',
                         'coffee/game/ride_engine.coffee',
                         'coffee/presenters/home_presenter.coffee',
                         'coffee/main.coffee'
