@@ -45,7 +45,7 @@ USER_SOURCE = [
     name: 'John Zimmer',
     profile_picture_src: 'zimmer.jpg',
     location: 'Greenwhich',
-    music: 'Simon & Garfunkel, CCR',
+    music: 'Bob Dylan, CCR',
     likes: 'Rock n roll, Lyft <3'
   },
   {

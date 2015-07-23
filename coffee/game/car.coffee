@@ -25,7 +25,7 @@ class Car
     @currentPosition = @grid.randomCrossStreets()
     @_refreshPosition()
     @currentStreetDirection = StreetDirection.CROSS
-    @currentTimer = null
+    @currentAnimation = null
 
   _refreshPosition: () ->
     @source.attr('x', @currentPosition.getX() - @carWidth / 2)
@@ -35,33 +35,27 @@ class Car
     if PointHelper.compare(@currentPosition, point)
       callback()
     else
-      @currentTimer = setTimeout(
-                                  () =>
-                                    @currentTimer = null
-                                    k = -1
-                                    if orientation is Orientation.DOWN or orientation is Orientation.RIGHT
-                                      k = 1
+      @currentAnimation = setTimeout(
+                                      () =>
+                                        k = -1
+                                        if orientation is Orientation.DOWN or orientation is Orientation.RIGHT
+                                          k = 1
 
-                                    if direction is StreetDirection.HORIZONTAL
-                                      @currentPosition.setX(@currentPosition.getX() + k)
-                                    else
-                                      @currentPosition.setY(@currentPosition.getY() + k)
-                                    EventBus.get('Car').post(CarMoveEvent.NAME, new CarMoveEvent())
-                                    @_refreshPosition()
-                                    @_animateTo(point, direction, orientation, callback)
-                                ,
-                                  1 / Car.SPEED
-                                )
+                                        if direction is StreetDirection.HORIZONTAL
+                                          @currentPosition.setX(@currentPosition.getX() + k)
+                                        else
+                                          @currentPosition.setY(@currentPosition.getY() + k)
+                                        EventBus.get('Car').post(CarMoveEvent.NAME, new CarMoveEvent())
+                                        @_refreshPosition()
+                                        @_animateTo(point, direction, orientation, callback)
+                                    ,
+                                      1 / Car.SPEED
+                                    )
 
   _moveTo: (target) ->
     if PointHelper.compare(@currentPosition, target, @grid.getStreetSize())
       # I am on spot
       return
-
-    if @currentTimer?
-      # Handle interruptions
-      clearTimeout(@currentTimer)
-      @currentTimer = null
 
     if @grid.isACrossStreet(@currentPosition)
       @currentStreetDirection = StreetDirection.CROSS
@@ -140,4 +134,9 @@ class Car
   requestMove: (target) ->
     return unless @grid.isWithinAStreet(target)
     @latestDirectionFromJunction = Direction.UNKNOWN
+
+    if @currentAnimation?
+      clearTimeout(@currentAnimation)
+      @currentAnimation = null
+
     @_moveTo(@grid.realign(target))
