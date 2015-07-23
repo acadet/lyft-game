@@ -34,12 +34,15 @@ class Zone
                   @duration,
                   null,
                    () =>
-                     EventBus.get('Zone').post(ZoneVanishedEvent.NAME, ZoneVanishedEvent(@id))
+                     @postVanished()
                      @hide()
                  )
 
   getId: () ->
     @id
+
+  postVanished: () ->
+    # TO IMPL
 
   isNearMe: (point) ->
     PointHelper.compare(point, @position, @grid.getStreetSize() / 2)

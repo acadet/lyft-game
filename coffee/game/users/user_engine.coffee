@@ -15,7 +15,8 @@ class UserEngine
       @users.push o
 
   showRandom: () ->
-    return if @activeSize is 4 or @activeSize is @users.length
+    return if @activeSize is @users.length
+
     id = -1
     while (id < 0) or @active.hasOwnProperty(id)
       id = Math.round(Math.random() * (@users.length - 1))

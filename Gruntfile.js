@@ -14,7 +14,9 @@ module.exports = function (grunt) {
                     'js/main.js': [
                         'coffee/events/car_move_event.coffee',
                         'coffee/events/pickup_event.coffee',
-                        'coffee/events/zone_vanished_event.coffee',
+                        'coffee/events/drop_event.coffee',
+                        'coffee/events/pickup_zone_vanished_event.coffee',
+                        'coffee/events/drop_zone_vanished_event.coffee',
                         'coffee/utils/event_bus.coffee',
                         'coffee/helpers/double_helper.coffee',
                         'coffee/helpers/point_helper.coffee',

@@ -7,16 +7,16 @@ class RideEngine
     @generator = null
 
     EventBus.get('Car').register CarMoveEvent.NAME, (e) => @onCarMove(e)
-    EventBus.get('Zone').register ZoneVanishedEvent.NAME, (e) => @onZoneVanished(e)
+    EventBus.get('Zone').register PickupZoneVanishedEvent.NAME, (e) => @onPickupZoneVanished(e)
 
   start: () ->
     @pickupZones = {}
+    @dropZones = {}
     id = 0
     @generator = setInterval(
                               () =>
                                 z = new PickupZone(id, @grid, @duration)
-                                @pickupZones[id] =
-                                  zone: z
+                                @pickupZones[id] = z
                                 id++
                             ,
                               @frequency
@@ -25,17 +25,31 @@ class RideEngine
   stop: () ->
     clearInterval(@generator)
 
-
   onCarMove: (e) ->
-    toRemove = []
-    for k, v of @pickupZones
-      if v.zone.isNearMe(@car.getCurrentPosition())
-        v.zone.hide()
-        EventBus.get('RideEngine').post(PickupEvent.NAME, new PickupEvent(v.zone))
-        toRemove.push k # Remove from current pickup zones
+    pickupZoneToRemove = []
+    dropZoneToRemove = []
 
-    for e in toRemove
+    for id, zone of @pickupZones
+      if zone.isNearMe(@car.getCurrentPosition())
+        zone.hide()
+        EventBus.get('RideEngine').post(PickupEvent.NAME, new PickupEvent(zone))
+        @dropZones[id] = new DropZone(id, @grid, @duration)
+        pickupZoneToRemove.push id # Remove from current pickup zones
+
+    for id, zone of @dropZones
+      if zone.isNearMe(@car.getCurrentPosition())
+        zone.hide()
+        EventBus.get('RideEngine').post(DropEvent.NAME, new DropEvent(zone))
+        dropZoneToRemove.push id
+
+    for e in pickupZoneToRemove
       delete @pickupZones[e]
 
-  onZoneVanished: (e) ->
+    for e in dropZoneToRemove
+      delete @dropZones[e]
+
+  onPickupZoneVanished: (e) ->
     delete @pickupZones[e.getId()]
+
+  onDropZoneVanished: (e) ->
+    delete @dropZones[e.getId()]
