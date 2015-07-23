@@ -41,6 +41,7 @@ class Car
                                       @currentPosition.setX(@currentPosition.getX() + k)
                                     else
                                       @currentPosition.setY(@currentPosition.getY() + k)
+                                    @listener() if @listener?
                                     @_refreshPosition()
                                     @_animateTo(point, direction, orientation, callback)
                                 ,
@@ -120,6 +121,15 @@ class Car
           horizontalMove()
         else
           verticalMove()
+
+  getCurrentPosition: () ->
+    @currentPosition
+
+  watch: (listener) ->
+    @listener = listener
+
+  unwatch: () ->
+    @listener = null
 
   requestMove: (target) ->
     return unless @grid.isWithinAStreet(target)

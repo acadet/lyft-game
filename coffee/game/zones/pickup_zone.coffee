@@ -1,3 +1,3 @@
 class PickupZone extends Zone
-  constructor: (grid, countdownDelay) ->
-    super(grid, countdownDelay, 'balloon')
+  constructor: (id, grid) ->
+    super(id, grid, 'balloon')

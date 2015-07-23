@@ -4,7 +4,8 @@ class Zone
   @ANIMATION_DURATION_MS = 500
   @ANIMATION_DELAY_MS = 5 * 1000
 
-  constructor: (grid, countdownDelay, imgExtension) ->
+  constructor: (id, grid, imgExtension) ->
+    @id = id
     @grid = grid
     @position = grid.randomPosition()
     colorIndex = Math.round(Math.random() * (Zone.COLORS.length - 1))
@@ -19,10 +20,6 @@ class Zone
                                    () => @_animate(),
                                    Zone.ANIMATION_DELAY_MS
                                  )
-    @countdown = setTimeout(
-                             () => @hide(),
-                             countdownDelay
-                           )
 
   _animate: () ->
     x = @icon.attr('x')
@@ -50,6 +47,9 @@ class Zone
               ,
                 Zone.ANIMATION_DURATION_MS
               )
+
+  getId: () ->
+    @id
 
   isNearMe: (point) ->
     PointHelper.compare(point, @position, @grid.getStreetSize() / 2)
