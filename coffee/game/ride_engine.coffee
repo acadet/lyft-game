@@ -67,13 +67,16 @@ class RideEngine
         d = new DropZone(id, @grid, zone.getColor())
         d.setDuration @dropDuration
         d.setAnimationDelay @dropAnimationDelay
-        @dropZones[id] = d
+        @dropZones[id] =
+          startTime: Date.now()
+          zone: d
         pickupZoneToRemove.push id # Remove from current pickup zones
 
-    for id, zone of @dropZones
-      if zone.isNearMe(@car.getCurrentPosition())
-        zone.hide()
-        EventBus.get('RideEngine').post(DropEvent.NAME, new DropEvent(zone))
+    for id, wrapper of @dropZones
+      if wrapper.zone.isNearMe(@car.getCurrentPosition())
+        wrapper.zone.hide()
+        speedRatio = (Date.now() - wrapper.startTime) / @dropDuration
+        EventBus.get('RideEngine').post(DropEvent.NAME, new DropEvent(wrapper.zone, speedRatio))
         dropZoneToRemove.push id
 
     for e in pickupZoneToRemove
