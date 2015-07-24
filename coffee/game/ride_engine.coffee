@@ -56,11 +56,11 @@ class RideEngine
 
   stop: () ->
     clearInterval(@generator)
-    for e in @pickupZones
-      e.hide()
-    for e in @dropZones
-      e.hide()
-
+    for id, zone of @pickupZones
+      zone.hide()
+    for id, wrapper of @dropZones
+      wrapper.zone.hide()
+  
   onCarMove: (e) ->
     pickupZoneToRemove = []
     dropZoneToRemove = []
