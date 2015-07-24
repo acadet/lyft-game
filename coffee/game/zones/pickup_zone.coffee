@@ -1,6 +1,6 @@
 class PickupZone extends Zone
-  constructor: (id, grid, duration) ->
-    super(id, grid, duration, Zone.randomColor())
+  constructor: (id, grid) ->
+    super(id, grid, Zone.randomColor())
 
   getImgExtension: () ->
     'balloon'

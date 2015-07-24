@@ -3,18 +3,37 @@ class HomePresenter
   _initCar: () ->
     c = @grid.getSnap().image('imgs/car.png', 0, 0, 20, 20)
     c.addClass('js-car')
-    @car = new Car('.js-car', @grid)
+    @car = new Car('.js-car', @grid, CONFIG.carSpeed)
+
+  _initRideEngine: () ->
+    @rideEngine = new RideEngine(@grid, @car, 5 * 1000, 10 * 1000)
+    @rideEngine.setPickupFrequency CONFIG.pickupFrequency
+    @rideEngine.setPickupDuration CONFIG.pickupDuration
+    @rideEngine.setPickupAnimationDelay CONFIG.pickupAnimationDelay
+    @rideEngine.setDropDuration CONFIG.dropDuration
+    @rideEngine.setDropAnimationDelay CONFIG.dropAnimationDelay
+
+    EventBus.get('RideEngine').register(PickupEvent.NAME, (z) => @onPickup(z))
+    EventBus.get('RideEngine').register(DropEvent.NAME, (z) => @onDrop(z))
+
+    @rideEngine.start()
+
+  _initScoreManager: () ->
+    @scoreManager = new ScoreManager('.js-score')
+    @scoreManager.setMissedPickupFare CONFIG.missedPickupFare
+    @scoreManager.setMissedDropFare CONFIG.missedDropFare
+    @scoreManager.setSuccessfulDropFare CONFIG.successfulDropFare
+    @scoreManager.setBonusTip CONFIG.bonusTip
+    @scoreManager.setTipSpeedRatio CONFIG.tipSpeedRatio
 
   onStart: () ->
     @grid = new Grid('.js-map', 200, 10)
     @grid.render()
-    @_initCar()
-    @rideEngine = new RideEngine(@grid, @car, 5 * 1000, 10 * 1000)
-    EventBus.get('RideEngine').register(PickupEvent.NAME, (z) => @onPickup(z))
-    EventBus.get('RideEngine').register(DropEvent.NAME, (z) => @onDrop(z))
-    @rideEngine.start()
 
     @currentRides = {}
+
+    @_initCar()
+    @_initRideEngine()
 
     @userEngine = new UserEngine('.js-user-list', '.js-user-card')
 

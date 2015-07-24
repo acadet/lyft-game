@@ -1,14 +1,42 @@
 class RideEngine
-  constructor: (grid, car, frequency, duration) ->
+  constructor: (grid, car) ->
     @grid = grid
     @car = car
-    @frequency = frequency
-    @duration = duration
     @generator = null
 
     EventBus.get('Car').register CarMoveEvent.NAME, (e) => @onCarMove(e)
     EventBus.get('Zone').register PickupZoneVanishedEvent.NAME, (e) => @onPickupZoneVanished(e)
     EventBus.get('Zone').register DropZoneVanishedEvent.NAME, (e) => @onDropZoneVanished(e)
+
+  getPickupFrequency: () ->
+    @pickupFrequency
+
+  setPickupFrequency: (v) ->
+    @pickupFrequency = v
+
+  getPickupDuration: () ->
+    @pickupDuration
+
+  setPickupDuration: (v) ->
+    @pickupDuration = v
+
+  getPickupAnimationDelay: () ->
+    @pickupAnimationDelay
+
+  setPickupAnimationDelay: (v) ->
+    @pickupAnimationDelay = v
+
+  getDropDuration: () ->
+    @dropDuration
+
+  setDropDuration: (v) ->
+    @dropDuration = v
+
+  getDropAnimationDelay: () ->
+    @dropAnimationDelay
+
+  setDropAnimationDelay: (v) ->
+    @dropAnimationDelay = v
 
   start: () ->
     @pickupZones = {}
@@ -16,11 +44,13 @@ class RideEngine
     id = 0
     @generator = setInterval(
                               () =>
-                                z = new PickupZone(id, @grid, @duration)
+                                z = new PickupZone(id, @grid)
+                                z.setDuration @pickupDuration
+                                z.setAnimationDelay = @pickupAnimationDelay
                                 @pickupZones[id] = z
                                 id++
                             ,
-                              @frequency
+                              @pickupFrequency
                             )
 
   stop: () ->
@@ -34,7 +64,10 @@ class RideEngine
       if zone.isNearMe(@car.getCurrentPosition())
         zone.hide()
         EventBus.get('RideEngine').post(PickupEvent.NAME, new PickupEvent(zone))
-        @dropZones[id] = new DropZone(id, @grid, @duration, zone.getColor())
+        d = new DropZone(id, @grid, zone.getColor())
+        d.setDuration @dropDuration
+        d.setAnimationDelay @dropAnimationDelay
+        @dropZones[id] = d
         pickupZoneToRemove.push id # Remove from current pickup zones
 
     for id, zone of @dropZones

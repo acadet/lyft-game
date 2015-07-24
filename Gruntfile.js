@@ -12,15 +12,22 @@ module.exports = function (grunt) {
                 },
                 files: {
                     'js/main.js': [
+                        'coffee/config.coffee',
+                        // Events
                         'coffee/events/car_move_event.coffee',
                         'coffee/events/pickup_event.coffee',
                         'coffee/events/drop_event.coffee',
                         'coffee/events/pickup_zone_vanished_event.coffee',
                         'coffee/events/drop_zone_vanished_event.coffee',
+                        'coffee/events/game_over_event.coffee',
+                        // Utils
                         'coffee/utils/event_bus.coffee',
+                        // Helpers
                         'coffee/helpers/double_helper.coffee',
                         'coffee/helpers/point_helper.coffee',
+                        // Structs
                         'coffee/structs/point.coffee',
+                        // Game
                         'coffee/game/grid.coffee',
                         'coffee/game/car.coffee',
                         'coffee/game/users/source.coffee',

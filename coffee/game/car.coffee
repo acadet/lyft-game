@@ -1,6 +1,4 @@
 class Car
-  @SPEED = 10 * 1000
-
   class StreetDirection
     @CROSS = 0
     @HORIZONTAL = 1
@@ -17,11 +15,12 @@ class Car
     @HORIZONTAL = 1
     @VERTICAL = 2
 
-  constructor: (source, grid) ->
+  constructor: (source, grid, speed) ->
     @source = $(source)
     @carWidth = parseInt(@source.attr('width'))
     @carHeight = parseInt(@source.attr('height'))
     @grid = grid
+    @speed = speed
     @currentPosition = @grid.randomCrossStreets()
     @_refreshPosition()
     @currentStreetDirection = StreetDirection.CROSS
@@ -49,7 +48,7 @@ class Car
                                         @_refreshPosition()
                                         @_animateTo(point, direction, orientation, callback)
                                     ,
-                                      1 / Car.SPEED
+                                      1 / @speed
                                     )
 
   _moveTo: (target) ->
@@ -127,6 +126,12 @@ class Car
         else
           @latestDirectionFromJunction = Direction.VERTICAL
           verticalMove()
+
+  getSpeed: () ->
+    @speed
+
+  setSpeed: (v) ->
+    @speed = v
 
   getCurrentPosition: () ->
     @currentPosition

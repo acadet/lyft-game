@@ -26,6 +26,24 @@ class ScoreManager
   setMissedDropFare: (v) ->
     @missedDropFare = v
 
+  getSuccessfulDropFare: () ->
+    @successfulDropFare
+
+  setSuccessfulDropFare: (v) ->
+    @successfulDropFare = v
+
+  getBonusTip: () ->
+    @bonusTip
+
+  setBonusTip: (v) ->
+    @bonusTip = v
+
+  getTipSpeedRatio: () ->
+    @tipSpeedRatio
+
+  setTipSpeedRatio: (v) ->
+    @tipSpeedRatio = v
+
   onMissedPickup: (e) ->
     @currentScore -= @missedPickupFare
     @_refreshScore()
@@ -35,7 +53,7 @@ class ScoreManager
     @_refreshScore()
 
   onDrop: (e) ->
-    if e.getSpeedRatio() <= @speedRatio
+    if e.getSpeedRatio() <= @tipSpeedRatio
       @currentScore += @bonusTip
     @currentScore += @successfulDropFare
     @_refreshScore()
