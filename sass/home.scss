@@ -117,3 +117,17 @@ aside {
     }
   }
 }
+
+.score {
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  background: transparentize($black, 0.8);
+
+  p {
+    margin: 1em;
+
+    color: $green;
+  }
+}

@@ -1,8 +1,12 @@
 class DropEvent
   @NAME = 'DropEvent'
 
-  constructor: (zone) ->
+  constructor: (zone, speedRatio) ->
     @zone = zone
+    @speedRatio = speedRatio
 
   getZone: () ->
     @zone
+
+  getSpeedRatio: () ->
+    @speedRatio

@@ -29,6 +29,7 @@ module.exports = function (grunt) {
                         'coffee/game/zones/pickup_zone.coffee',
                         'coffee/game/zones/drop_zone.coffee',
                         'coffee/game/ride_engine.coffee',
+                        'coffee/game/score_manager.coffee',
                         'coffee/presenters/home_presenter.coffee',
                         'coffee/main.coffee'
                     ]
