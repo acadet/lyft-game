@@ -1,4 +1,6 @@
 class RideEngine
+  @MAX_RIDES = 4
+
   constructor: (grid, car) ->
     @grid = grid
     @car = car
@@ -60,12 +62,22 @@ class RideEngine
       zone.hide()
     for id, wrapper of @dropZones
       wrapper.zone.hide()
-  
+
   onCarMove: (e) ->
     pickupZoneToRemove = []
     dropZoneToRemove = []
+    currentRides = Object.keys(@dropZones).length
+
+    for id, wrapper of @dropZones
+      if wrapper.zone.isNearMe(@car.getCurrentPosition())
+        wrapper.zone.hide()
+        speedRatio = (Date.now() - wrapper.startTime) / @dropDuration
+        EventBus.get('RideEngine').post(DropEvent.NAME, new DropEvent(wrapper.zone, speedRatio))
+        dropZoneToRemove.push id
+        currentRides--
 
     for id, zone of @pickupZones
+      break if currentRides == RideEngine.MAX_RIDES
       if zone.isNearMe(@car.getCurrentPosition())
         zone.hide()
         EventBus.get('RideEngine').post(PickupEvent.NAME, new PickupEvent(zone))
@@ -77,13 +89,7 @@ class RideEngine
           startTime: Date.now()
           zone: d
         pickupZoneToRemove.push id # Remove from current pickup zones
-
-    for id, wrapper of @dropZones
-      if wrapper.zone.isNearMe(@car.getCurrentPosition())
-        wrapper.zone.hide()
-        speedRatio = (Date.now() - wrapper.startTime) / @dropDuration
-        EventBus.get('RideEngine').post(DropEvent.NAME, new DropEvent(wrapper.zone, speedRatio))
-        dropZoneToRemove.push id
+        currentRides++
 
     for e in pickupZoneToRemove
       delete @pickupZones[e]
