@@ -128,6 +128,15 @@ aside {
   p {
     margin: 1em;
 
-    color: $green;
+    color: $white;
+    @include transition(color, .5s, ease-in);
+
+    &.increase {
+      color: $green;
+    }
+
+    &.decrease {
+      color: $red;
+    }
   }
 }

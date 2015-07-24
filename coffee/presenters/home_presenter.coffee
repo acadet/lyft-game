@@ -56,5 +56,5 @@ class HomePresenter
     delete @currentRides[id]
 
   onGameOver: (e) ->
-    alert('game over')
+    console.log('game over')
     @rideEngine.stop()
