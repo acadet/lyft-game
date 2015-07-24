@@ -6,7 +6,7 @@ class HomePresenter
     @car = new Car('.js-car', @grid, CONFIG.carSpeed)
 
   _initRideEngine: () ->
-    @rideEngine = new RideEngine(@grid, @car, 5 * 1000, 10 * 1000)
+    @rideEngine = new RideEngine(@grid, @car)
     @rideEngine.setPickupFrequency CONFIG.pickupFrequency
     @rideEngine.setPickupDuration CONFIG.pickupDuration
     @rideEngine.setPickupAnimationDelay CONFIG.pickupAnimationDelay
@@ -26,6 +26,8 @@ class HomePresenter
     @scoreManager.setBonusTip CONFIG.bonusTip
     @scoreManager.setTipSpeedRatio CONFIG.tipSpeedRatio
 
+    EventBus.get('ScoreManager').register(GameOverEvent.NAME, (z) => @onGameOver(z))
+
   onStart: () ->
     @grid = new Grid('.js-map', 200, 10)
     @grid.render()
@@ -34,6 +36,7 @@ class HomePresenter
 
     @_initCar()
     @_initRideEngine()
+    @_initScoreManager()
 
     @userEngine = new UserEngine('.js-user-list', '.js-user-card')
 
@@ -51,3 +54,7 @@ class HomePresenter
     o = @currentRides[e.getZone().getId()]
     @userEngine.hide(o.user)
     delete @currentRides[id]
+
+  onGameOver: (e) ->
+    alert('game over')
+    @rideEngine.stop()
