@@ -17,6 +17,7 @@
     "jquery": "~2.1.4",
     "bourbon": "~4.2.3",
     "snap.svg": "~0.4.1",
-    "mustache.js": "~2.1.2"
+    "mustache.js": "~2.1.2",
+    "jqueryui": "~1.11.4"
   }
 }
