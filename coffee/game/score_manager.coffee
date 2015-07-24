@@ -3,8 +3,8 @@ class ScoreManager
     @displayer = $(selector)
     @currentScore = 0
 
-    EventBus.get('RideEngine').register PickupZoneVanishedEvent.NAME, (z) => @onMissedPickup(z)
-    EventBus.get('RideEngine').register DropZoneVanishedEvent.NAME, (z) => @onMissedDrop(z)
+    EventBus.get('Zone').register PickupZoneVanishedEvent.NAME, (z) => @onMissedPickup(z)
+    EventBus.get('Zone').register DropZoneVanishedEvent.NAME, (z) => @onMissedDrop(z)
     EventBus.get('RideEngine').register DropEvent.NAME, (z) => @onDrop(z)
 
   _refreshScore: () ->
