@@ -46,7 +46,8 @@ class RideEngine
                               () =>
                                 z = new PickupZone(id, @grid)
                                 z.setDuration @pickupDuration
-                                z.setAnimationDelay = @pickupAnimationDelay
+                                z.setAnimationDelay @pickupAnimationDelay
+                                z.show()
                                 @pickupZones[id] = z
                                 id++
                             ,
@@ -67,6 +68,7 @@ class RideEngine
         d = new DropZone(id, @grid, zone.getColor())
         d.setDuration @dropDuration
         d.setAnimationDelay @dropAnimationDelay
+        d.show()
         @dropZones[id] =
           startTime: Date.now()
           zone: d
