@@ -1,11 +1,6 @@
 class DropZone extends Zone
   constructor: (id, grid, duration, color) ->
-    @color = color
-
-    super(id, grid, 'marker', duration)
-
-  getColor: () ->
-    @color
+    super(id, grid, duration, color)
 
   getImgExtension: () ->
     'marker'

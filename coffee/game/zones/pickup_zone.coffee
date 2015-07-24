@@ -1,13 +1,6 @@
 class PickupZone extends Zone
   constructor: (id, grid, duration) ->
-    super(id, grid, duration)
-
-  getColor: () ->
-    return @color if @color?
-
-    colorIndex = Math.round(Math.random() * (Zone.COLORS.length - 1))
-    @color = Zone.COLORS[colorIndex]
-    return @color
+    super(id, grid, duration, Zone.randomColor())
 
   getImgExtension: () ->
     'balloon'

@@ -4,15 +4,16 @@ class Zone
   @ANIMATION_DURATION_MS =
     @ANIMATION_DELAY_MS = 3 * 1000
 
-  constructor: (id, grid, duration) ->
+  constructor: (id, grid, duration, color) ->
     @id = id
     @grid = grid
     @duration = duration
 
     # Set marker
     @position = @grid.randomPosition()
+    @color = color
     @icon = @grid.getSnap().image(
-                                   "imgs/#{@getColor()}-#{@getImgExtension()}.png",
+                                   "imgs/#{@color}-#{@getImgExtension()}.png",
                                    @position.getX() - Zone.SIZE / 2,
                                    @position.getY() - Zone.SIZE / 2,
                                    Zone.SIZE,
@@ -24,6 +25,7 @@ class Zone
                                 )
 
   _animate: () ->
+    @animationTimer = null
     @icon.animate({
                     x: @position.getX(),
                     y: @position.getY(),
@@ -33,15 +35,15 @@ class Zone
                   @duration,
                   null,
                    () =>
-                     @postVanished()
                      @hide()
+                     @postVanished()
                  )
 
   getId: () ->
     @id
 
   getColor: () ->
-    # TO IMPL
+    @color
 
   getImgExtension: () ->
     # TO IMPL
@@ -53,6 +55,10 @@ class Zone
     PointHelper.compare(point, @position, @grid.getStreetSize() / 2)
 
   hide: () ->
-    clearTimeout(@animationTimer)
+    clearTimeout(@animationTimer) if @animationTimer?
     @icon.stop()
     @icon.remove()
+
+  @randomColor: () ->
+    colorIndex = Math.round(Math.random() * (Zone.COLORS.length - 1))
+    return Zone.COLORS[colorIndex]
