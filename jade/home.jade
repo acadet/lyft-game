@@ -16,6 +16,28 @@ html
     .score
       p.js-score
 
+    .popup-wrapper.js-popup-wrapper.hidden
+    .starting-popup.js-starting-popup.hidden
+      p
+        | Ever wanted to be a Lyft driver? Here you go!
+        br
+        | Try to pick up riders and drop them as fast as possible!
+        br
+        | Just click on a street to move your car to this spot.
+      p.confirmation.js-confirmation Alright! I'm ready!!
+
+    .ending-popup.js-ending-popup.hidden
+      p
+        | Aw :( Game over...
+        br
+        | Thanks for playing!
+      p.js-game-countdown You played for:
+      .share-wrapper
+        img.email.js-email
+        img.facebook.js-facebook
+        img.twitter.js-twitter
+      p.play-again.js-play-again Play again?
+
     script#template-user-profile(type='x-tmpl-mustache')
       include user_profile
 

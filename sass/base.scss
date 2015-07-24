@@ -7,3 +7,7 @@
   @include border-bottom-radius($value);
   @include border-left-radius($value);
 }
+
+.hidden {
+  display: none;
+}
