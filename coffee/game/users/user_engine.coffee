@@ -39,5 +39,6 @@ class UserEngine
       parsedId = parseInt($(e).data('id'))
       if parsedId is id
         delete @active[id]
+        @activeSize--
         $(e).parent().remove()
         return false
