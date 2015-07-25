@@ -95,7 +95,7 @@ class HomePresenter
       if @rideEngine.getDropDuration() <= @rideEngine.getDropAnimationDelay
         @rideEngine.setDropAnimationDelay(0)
 
-    @scoreManager.setMissedPickupFare(@scoreManager.getMissedPickupFare() * 3)
-    @scoreManager.setMissedDropFare(@scoreManager.getMissedDropFare() * 3)
-    @scoreManager.setSuccessfulDropFare(@scoreManager.getSuccessfulDropFare() * 1.5)
-    @scoreManager.setBonusTip(@scoreManager.getBonusTip() * 2)
+    @scoreManager.setMissedPickupFare(Math.round(@scoreManager.getMissedPickupFare() * 2))
+    @scoreManager.setMissedDropFare(Math.round(@scoreManager.getMissedDropFare() * 2))
+    @scoreManager.setSuccessfulDropFare(Math.round(@scoreManager.getSuccessfulDropFare() * 1.5))
+    @scoreManager.setBonusTip(Math.round(@scoreManager.getBonusTip() * 2))

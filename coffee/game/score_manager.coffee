@@ -12,17 +12,17 @@ class ScoreManager
   _refreshScore: (isIncreasing) ->
     if @currentScore < 0
       EventBus.get('ScoreManager').post GameOverEvent.NAME, new GameOverEvent()
+
+    @displayer.text "$#{@currentScore}"
+    if isIncreasing
+      @displayer.addClass 'increase'
     else
-      @displayer.text "$#{@currentScore}"
-      if isIncreasing
-        @displayer.addClass 'increase'
-      else
-        @displayer.addClass 'decrease'
-      @displayer.fadeOut(400, () => @displayer.fadeIn(400))
-      setTimeout(
-                  () => @displayer.removeClass('increase decrease'),
-                  1200
-                )
+      @displayer.addClass 'decrease'
+    @displayer.fadeOut(400, () => @displayer.fadeIn(400))
+    setTimeout(
+                () => @displayer.removeClass('increase decrease'),
+                1200
+              )
 
   getMissedPickupFare: () ->
     @missedPickupFare
