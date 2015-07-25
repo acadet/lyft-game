@@ -150,10 +150,10 @@ aside {
   height: 100%;
 
   z-index: 100;
-  background-color: transparentize($black, 0.5);
+  background-color: transparentize($black, 0.3);
 }
 
-.starting-popup, .ending-poup {
+.starting-popup, .ending-popup {
   position: fixed;
 
   padding: 20px;
@@ -167,14 +167,21 @@ aside {
     margin: .5em 1em;
 
     font: {
-      size: 1.5em;
+      size: 1.2em;
     }
     color: white;
   }
 
-  .confirmation {
+  a {
+    text-decoration: none;
+    color: inherit;
+
+    border: none;
+  }
+
+  .confirmation, .play-again {
     display: inline-block;
-    padding: 1em;
+    padding: 10px 15px;
 
     border: 1px solid $white;
     cursor: pointer;
@@ -184,6 +191,24 @@ aside {
     &:hover {
       background-color: $white;
       color: $pink;
+    }
+  }
+
+  .share-wrapper {
+    margin: .5em 1em;
+
+    img {
+      display: inline-block;
+
+      margin: 5px;
+
+      cursor: pointer;
+
+      @include transition(opacity, .5s);
+
+      &:hover {
+        opacity: 0.75;
+      }
     }
   }
 }

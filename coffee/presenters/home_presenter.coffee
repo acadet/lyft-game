@@ -15,8 +15,12 @@ class HomePresenter
 
     EventBus.get('RideEngine').register(PickupEvent.NAME, (z) => @onPickup(z))
     EventBus.get('RideEngine').register(DropEvent.NAME, (z) => @onDrop(z))
-
-    @rideEngine.start()
+    EventBus.getDefault().register(
+                                    OnStartEvent.NAME,
+                                    () =>
+                                      @startTime = Date.now()
+                                      @rideEngine.start()
+                                  )
 
   _initScoreManager: () ->
     @scoreManager = new ScoreManager('.js-score')
@@ -43,6 +47,9 @@ class HomePresenter
     $('.js-map').on 'click', (e) =>
       @car.requestMove(new Point(e.pageX, e.pageY))
 
+    @popupManager = new PopupManager()
+    @popupManager.showStart()
+
   onPickup: (e) ->
     o =
       zone: e
@@ -56,5 +63,5 @@ class HomePresenter
     delete @currentRides[id]
 
   onGameOver: (e) ->
-    console.log('game over')
     @rideEngine.stop()
+    @popupManager.showEnding(Date.now() - @startTime)

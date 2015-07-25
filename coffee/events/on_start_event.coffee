@@ -1,0 +1,2 @@
+class OnStartEvent
+  @NAME = 'OnStartEvent'

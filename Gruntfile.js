@@ -20,6 +20,7 @@ module.exports = function (grunt) {
                         'coffee/events/pickup_zone_vanished_event.coffee',
                         'coffee/events/drop_zone_vanished_event.coffee',
                         'coffee/events/game_over_event.coffee',
+                        'coffee/events/on_start_event.coffee',
                         // Utils
                         'coffee/utils/event_bus.coffee',
                         // Helpers
@@ -37,6 +38,8 @@ module.exports = function (grunt) {
                         'coffee/game/zones/drop_zone.coffee',
                         'coffee/game/ride_engine.coffee',
                         'coffee/game/score_manager.coffee',
+                        // Presenters
+                        'coffee/presenters/popup_manager.coffee',
                         'coffee/presenters/home_presenter.coffee',
                         'coffee/main.coffee'
                     ]

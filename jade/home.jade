@@ -33,10 +33,15 @@ html
         | Thanks for playing!
       p.js-game-countdown You played for:
       .share-wrapper
-        img.email.js-email
-        img.facebook.js-facebook
-        img.twitter.js-twitter
-      p.play-again.js-play-again Play again?
+        - var url = 'https://acadet.github.io/lyft'
+        a&attributes({'href': 'mailto:?subject=Wanna be a Lyft driver&body=Hey mate, check it out this super cool game: ' + url})
+          img.email.js-email(src='imgs/email.png')
+        a(target='_blank')&attributes({'href': 'https://www.facebook.com/sharer/sharer.php?u=' + url})
+          img.facebook.js-facebook(src='imgs/facebook.png')
+        a(target='_blank')&attributes({'href': 'https://twitter.com/intent/tweet?text=Wanna be a Lyft driver?&url=' + url})
+          img.twitter.js-twitter(src='imgs/twitter.png')
+      p.play-again.js-play-again
+        a(href='!{url}') Play again?
 
     script#template-user-profile(type='x-tmpl-mustache')
       include user_profile
