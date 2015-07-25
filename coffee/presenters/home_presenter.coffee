@@ -47,6 +47,9 @@ class HomePresenter
     $('.js-map').on 'click', (e) =>
       @car.requestMove(new Point(e.pageX, e.pageY))
 
+    @pickupSound = new Audio('sounds/car.mp3')
+    @dropSound = new Audio('sounds/cash.mp3')
+
     @popupManager = new PopupManager()
     @popupManager.showStart()
 
@@ -55,12 +58,15 @@ class HomePresenter
       zone: e
       user: @userEngine.showRandom()
     @currentRides[e.getZone().getId()] = o
+    @pickupSound.play()
+
 
   onDrop: (e) ->
     id = e.getZone().getId()
     o = @currentRides[e.getZone().getId()]
     @userEngine.hide(o.user)
     delete @currentRides[id]
+    @dropSound.play()
 
   onGameOver: (e) ->
     @rideEngine.stop()
