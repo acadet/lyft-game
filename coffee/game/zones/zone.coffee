@@ -1,6 +1,25 @@
 class Zone
-  @COLORS = ['red', 'blue', 'purple', 'green']
   @SIZE = 30
+
+  @colors = [
+    {
+      label: 'red'
+      inUse: false
+    },
+    {
+      label: 'blue'
+      inUse: false
+    },
+    {
+      label: 'purple'
+      inUse: false
+    },
+    {
+      label: 'green'
+      inUse: false
+    }
+  ]
+  @colorInUse = 0
 
   constructor: (id, grid, color) ->
     @id = id
@@ -64,6 +83,13 @@ class Zone
     @icon.stop()
     @icon.remove()
 
-  @randomColor: () ->
-    colorIndex = Math.round(Math.random() * (Zone.COLORS.length - 1))
-    return Zone.COLORS[colorIndex]
+  @provideColor: () ->
+    randomIndex = () => Math.round(Math.random() * (Zone.colors.length - 1))
+    return Zone.colors[randomIndex()].label if Zone.colorInUse == Zone.colors.length
+
+    while true
+      color = Zone.colors[randomIndex()]
+      if not color.inUse
+        color.inUse = true
+        Zone.colorInUse++
+        return color.label

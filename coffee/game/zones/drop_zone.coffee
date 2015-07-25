@@ -7,3 +7,11 @@ class DropZone extends Zone
 
   postVanished: () ->
     EventBus.get('Zone').post(DropZoneVanishedEvent.NAME, new DropZoneVanishedEvent(@getId()))
+
+  hide: () ->
+    super
+    Zone.colorInUse--
+    for e in Zone.colors
+      if e.label is @getColor()
+        e.inUse = false
+        break
