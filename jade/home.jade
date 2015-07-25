@@ -5,6 +5,7 @@ html
 
     title Lyft Game
 
+    link(href='http://fonts.googleapis.com/css?family=Lato:400, 700', rel='stylesheet', type='text/css')
     link(rel='stylesheet', href='css/home.css')
   body
     .body-wrapper
@@ -28,7 +29,9 @@ html
 
     .ending-popup.js-ending-popup.hidden
       p
-        | Aw :( Game over...
+        | Awwww :(
+        br
+        | Game over...
         br
         | Thanks for playing!
       p.js-game-countdown You played for:
@@ -41,7 +44,7 @@ html
         a(target='_blank')&attributes({'href': 'https://twitter.com/intent/tweet?text=Wanna be a Lyft driver?&url=' + url})
           img.twitter.js-twitter(src='imgs/twitter.png')
       p.play-again.js-play-again
-        a(href='!{url}') Play again?
+        a&attributes({'href': url}) Play again?
 
     script#template-user-profile(type='x-tmpl-mustache')
       include user_profile

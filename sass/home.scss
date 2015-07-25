@@ -91,12 +91,14 @@ aside {
 
     font: {
       size: 1em;
+      family: $main-font;
+      weight: 700;
     }
     color: $pink;
   }
 
   .about {
-    margin: 5px 0 0 0;
+    margin: 10px 0 0 0;
     padding: 0;
     box-sizing: border-box;
 
@@ -106,7 +108,7 @@ aside {
       @include display(flex);
       @include align-items(center);
 
-      margin: 3px 0;
+      margin: 10px 0;
       padding: 0;
 
       text-align: left;
@@ -117,14 +119,20 @@ aside {
       }
 
       img {
-        padding: 0 5px 0 0;
+        padding: 0 10px 0 0;
       }
 
       p {
         @include flex(1);
 
+        margin: 0;
+
         color: $black;
-        font-size: 0.7em;
+        font: {
+          family: $main-font;
+          size: 0.7em;
+        }
+        line-height: 1.5em;
       }
     }
   }
@@ -140,7 +148,12 @@ aside {
   p {
     margin: 1em;
 
+    font: {
+      family: $main-font;
+      size: 1em;
+    }
     color: $white;
+
     @include transition(color, .5s, ease-in);
 
     &.increase {
@@ -180,7 +193,10 @@ aside {
 
     font: {
       size: 1.2em;
+      family: $main-font;
+      variant: small-caps;
     }
+    line-height: 1.5em;
     color: white;
   }
 
