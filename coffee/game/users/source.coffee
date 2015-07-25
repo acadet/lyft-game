@@ -1,7 +1,7 @@
 USER_SOURCE = [
   {
     name: 'Al',
-    profile_picture_src: 'al_pacino.jpeg',
+    profile_picture_src: 'pacino.jpeg',
     location: 'NYC',
     music: 'Johnny Cash, Neil Young',
     likes: 'Chainsaws, having sympathy for the devil'
@@ -54,5 +54,26 @@ USER_SOURCE = [
     location: 'London',
     music: 'Armstrong, Led Zeppelin',
     likes: 'Charming guys, being a spy'
+  },
+  {
+    name: 'Bruce',
+    profile_picture_src: 'willis.jpg',
+    location: 'LA',
+    music: 'Otis Redding, Phil Collins',
+    likes: 'Destroying buildings, kicking asses'
+  },
+  {
+    name: 'Emma',
+    profile_picture_src: 'watson.jpg',
+    location: 'London',
+    music: 'Elton John, Franz Ferdinand',
+    likes: 'Wingardium leviosa, photography'
+  },
+  {
+    name: 'Ralph',
+    profile_picture_src: 'fiennes.jpg',
+    location: 'London',
+    music: 'The Stranglers, The Police',
+    likes: 'Planes, Budapest'
   }
 ]
