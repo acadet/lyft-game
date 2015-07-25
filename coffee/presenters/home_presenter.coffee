@@ -15,6 +15,7 @@ class HomePresenter
 
     EventBus.get('RideEngine').register(PickupEvent.NAME, (z) => @onPickup(z))
     EventBus.get('RideEngine').register(DropEvent.NAME, (z) => @onDrop(z))
+    EventBus.get('Zone').register DropZoneVanishedEvent.NAME, (z) => @onMissedDrop(z)
     EventBus.getDefault().register(
                                     OnStartEvent.NAME,
                                     () =>
@@ -60,6 +61,10 @@ class HomePresenter
     @currentRides[e.getZone().getId()] = o
     @pickupSound.play()
 
+  onMissedDrop: (e) ->
+    o = @currentRides[e.getId()]
+    @userEngine.hide(o.user)
+    delete @currentRides[id]
 
   onDrop: (e) ->
     id = e.getZone().getId()
