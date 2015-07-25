@@ -10,11 +10,6 @@ class Car
     @DOWN = 2
     @LEFT = 3
 
-  #  class Direction
-  #    @UNKNOWN = 0
-  #    @HORIZONTAL = 1
-  #    @VERTICAL = 2
-
   constructor: (source, grid, speed) ->
     @source = $(source)
     @carWidth = parseInt(@source.attr('width'))
@@ -58,8 +53,6 @@ class Car
 
     if @grid.isACrossStreet(@currentPosition)
       @currentStreetDirection = StreetDirection.CROSS
-    #    else
-    #      @latestDirectionFromJunction = Direction.UNKNOWN
 
     callback = () => @_moveTo(target)
 
@@ -133,70 +126,6 @@ class Car
         else
           verticalMove()
 
-#    verticalMove = () =>
-#      p = target
-#      needMilestone = not DoubleHelper.compare(target.getX(), @currentPosition.getX())
-#
-#      if @currentPosition.getY() <= target.getY()
-#        p = @grid.getNextHorizontalCross(@currentPosition) if needMilestone
-#        @_animateTo(
-#                     p
-#                     StreetDirection.VERTICAL,
-#                     Orientation.DOWN,
-#                     callback
-#                   )
-#      else
-#        p = @grid.getPrevHorizontalCross(@currentPosition) if needMilestone
-#        @_animateTo(
-#                     p,
-#                     StreetDirection.VERTICAL,
-#                     Orientation.UP,
-#                     callback
-#                   )
-#      @currentStreetDirection = StreetDirection.VERTICAL
-#    horizontalMove = () =>
-#      p = target
-#      needMilestone = not DoubleHelper.compare(target.getY(), @currentPosition.getY())
-#
-#      if @currentPosition.getX() <= target.getX()
-#        p = @grid.getNextVerticalCross(@currentPosition) if needMilestone
-#        @_animateTo(
-#                     p,
-#                     StreetDirection.HORIZONTAL,
-#                     Orientation.RIGHT
-#                     callback
-#                   )
-#      else
-#        p = @grid.getPrevVerticalCross(@currentPosition) if needMilestone
-#        @_animateTo(
-#                     p,
-#                     StreetDirection.HORIZONTAL,
-#                     Orientation.LEFT,
-#                     callback
-#                   )
-#      @currentStreetDirection = StreetDirection.HORIZONTAL
-#
-#    if @currentStreetDirection is StreetDirection.VERTICAL
-#      verticalMove()
-#    else if @currentStreetDirection is StreetDirection.HORIZONTAL
-#      horizontalMove()
-#    else
-#      # I am on a junction, I can move in both directions
-#      if DoubleHelper.compare(@currentPosition.getX(), target.getX())
-#        verticalMove()
-#      else if DoubleHelper.compare(@currentPosition.getY(), target.getY())
-#        horizontalMove()
-#      else
-#        wasHorizontal = @latestDirectionFromJunction is Direction.HORIZONTAL
-#        wasVertical = @latestDirectionFromJunction is Direction.VERTICAL
-#        shouldBeHorizontal = @grid.shouldIMoveHorizontal(@currentPosition, target)
-#        if (shouldBeHorizontal and (not wasHorizontal)) or ((not shouldBeHorizontal) and wasVertical)
-#          @latestDirectionFromJunction = Direction.HORIZONTAL
-#          horizontalMove()
-#        else
-#          @latestDirectionFromJunction = Direction.VERTICAL
-#          verticalMove()
-
   getSpeed: () ->
     @speed
 
@@ -208,7 +137,6 @@ class Car
 
   requestMove: (target) ->
     return unless @grid.isWithinAStreet(target)
-    # @latestDirectionFromJunction = Direction.UNKNOWN
 
     if @currentAnimation?
       clearTimeout(@currentAnimation)
