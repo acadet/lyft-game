@@ -2,6 +2,7 @@ class ScoreManager
   constructor: (selector) ->
     @displayer = $(selector)
     @currentScore = 50
+    @nextStep = 300
     @_refreshScore(true)
 
     EventBus.get('Zone').register PickupZoneVanishedEvent.NAME, (z) => @onMissedPickup(z)
@@ -66,3 +67,7 @@ class ScoreManager
       @currentScore += @bonusTip
     @currentScore += @successfulDropFare
     @_refreshScore(true)
+
+    if @currentScore >= @nextStep
+      @nextStep *= 2
+      EventBus.get('ScoreManager').post IncreaseDifficultyEvent.NAME, new IncreaseDifficultyEvent()

@@ -10,11 +10,27 @@ class RideEngine
     EventBus.get('Zone').register PickupZoneVanishedEvent.NAME, (e) => @onPickupZoneVanished(e)
     EventBus.get('Zone').register DropZoneVanishedEvent.NAME, (e) => @onDropZoneVanished(e)
 
+  _startGenerating: () ->
+    @generator = setInterval(
+                              () =>
+                                z = new PickupZone(@idCounter, @grid)
+                                z.setDuration @pickupDuration
+                                z.setAnimationDelay @pickupAnimationDelay
+                                z.show()
+                                @pickupZones[@idCounter] = z
+                                @idCounter++
+                            ,
+                              @pickupFrequency
+                            )
+
   getPickupFrequency: () ->
     @pickupFrequency
 
   setPickupFrequency: (v) ->
     @pickupFrequency = v
+    return unless @generator?
+    clearInterval(@generator)
+    @_startGenerating()
 
   getPickupDuration: () ->
     @pickupDuration
@@ -43,18 +59,8 @@ class RideEngine
   start: () ->
     @pickupZones = {}
     @dropZones = {}
-    id = 0
-    @generator = setInterval(
-                              () =>
-                                z = new PickupZone(id, @grid)
-                                z.setDuration @pickupDuration
-                                z.setAnimationDelay @pickupAnimationDelay
-                                z.show()
-                                @pickupZones[id] = z
-                                id++
-                            ,
-                              @pickupFrequency
-                            )
+    @idCounter = 0
+    @_startGenerating()
 
   stop: () ->
     clearInterval(@generator)

@@ -20,7 +20,8 @@ module.exports = function (grunt) {
                         'coffee/events/pickup_zone_vanished_event.coffee',
                         'coffee/events/drop_zone_vanished_event.coffee',
                         'coffee/events/game_over_event.coffee',
-                        'coffee/events/on_start_event.coffee',
+                        'coffee/events/start_event.coffee',
+                        'coffee/events/increase_difficulty_event.coffee',
                         // Utils
                         'coffee/utils/event_bus.coffee',
                         // Helpers

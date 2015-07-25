@@ -17,7 +17,7 @@ class HomePresenter
     EventBus.get('RideEngine').register(DropEvent.NAME, (z) => @onDrop(z))
     EventBus.get('Zone').register DropZoneVanishedEvent.NAME, (z) => @onMissedDrop(z)
     EventBus.getDefault().register(
-                                    OnStartEvent.NAME,
+                                    StartEvent.NAME,
                                     () =>
                                       @startTime = Date.now()
                                       @rideEngine.start()
@@ -32,6 +32,7 @@ class HomePresenter
     @scoreManager.setTipSpeedRatio CONFIG.tipSpeedRatio
 
     EventBus.get('ScoreManager').register(GameOverEvent.NAME, (z) => @onGameOver(z))
+    EventBus.get('ScoreManager').register(IncreaseDifficultyEvent.NAME, (z) => @onIncreasingDifficulty(z))
 
   onStart: () ->
     @grid = new Grid('.js-map', CONFIG.blockSize, CONFIG.streetSize)
@@ -80,3 +81,21 @@ class HomePresenter
     @isOver = true
     @rideEngine.stop()
     @popupManager.showEnding(Date.now() - @startTime)
+
+  onIncreasingDifficulty: (e) ->
+    @rideEngine.setPickupFrequency(@rideEngine.getPickupFrequency() / 2)
+
+    if @rideEngine.getPickupDuration() > 3
+      @rideEngine.setPickupDuration(@rideEngine.getPickupDuration() - 1)
+      if @rideEngine.getPickupDuration() <= @rideEngine.getPickupAnimationDelay()
+        @rideEngine.setPickupAnimationDelay(0)
+
+    if @rideEngine.getDropDuration() > 3
+      @rideEngine.setDropDuration(@rideEngine.getDropDuration() - 1)
+      if @rideEngine.getDropDuration() <= @rideEngine.getDropAnimationDelay
+        @rideEngine.setDropAnimationDelay(0)
+
+    @scoreManager.setMissedPickupFare(@scoreManager.getMissedPickupFare() * 3)
+    @scoreManager.setMissedDropFare(@scoreManager.getMissedDropFare() * 3)
+    @scoreManager.setSuccessfulDropFare(@scoreManager.getSuccessfulDropFare() * 1.5)
+    @scoreManager.setBonusTip(@scoreManager.getBonusTip() * 2)

@@ -1,0 +1,2 @@
+class IncreaseDifficultyEvent
+  @NAME = 'IncreaseDifficultyEvent'

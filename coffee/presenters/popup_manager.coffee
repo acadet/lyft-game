@@ -37,4 +37,4 @@ class PopupManager
   onConfirmation: () ->
     @startPopup.remove()
     @wrapper.addClass 'hidden'
-    EventBus.getDefault().post(OnStartEvent.NAME, new OnStartEvent())
+    EventBus.getDefault().post(StartEvent.NAME, new StartEvent())
