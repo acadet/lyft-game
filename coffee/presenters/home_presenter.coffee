@@ -46,7 +46,9 @@ class HomePresenter
     @userEngine = new UserEngine('.js-user-list', '.js-user-card')
 
     $('.js-map').on 'click', (e) =>
-      @car.requestMove(new Point(e.pageX, e.pageY))
+      x = e.pageX - @grid.getSource().offset().left
+      y = e.pageY - @grid.getSource().offset().top
+      @car.requestMove(new Point(x, y))
 
     @pickupSound = new Audio('sounds/car.mp3')
     @dropSound = new Audio('sounds/cash.mp3')

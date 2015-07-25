@@ -13,11 +13,17 @@ class Grid
     @verticalStreetNumber = Math.floor(@gridWidth / @blockSize) + 1
     @horizontalStreetNumber = Math.floor(@gridHeight / @blockSize) + 1
 
+  getSource: () ->
+    @source
+
   getSnap: () ->
     @snap
 
   getStreetSize: () ->
     @streetSize
+
+  getBlockSize: () ->
+    @blockSize
 
   # Builds grid
   render: () ->
