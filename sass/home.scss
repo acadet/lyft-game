@@ -26,6 +26,8 @@ body {
 section {
   width: 70% - 1%;
   height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
 
   background: $map-background;
   overflow: hidden;

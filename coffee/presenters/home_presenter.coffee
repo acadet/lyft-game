@@ -34,7 +34,7 @@ class HomePresenter
     EventBus.get('ScoreManager').register(GameOverEvent.NAME, (z) => @onGameOver(z))
 
   onStart: () ->
-    @grid = new Grid('.js-map', 200, 10)
+    @grid = new Grid('.js-map', CONFIG.blockSize, CONFIG.streetSize)
     @grid.render()
 
     @currentRides = {}
