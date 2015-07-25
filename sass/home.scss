@@ -58,8 +58,20 @@ aside {
     box-sizing: border-box;
 
     overflow: auto;
-    background: $white;
+    background: {
+      position: 5px 5px;
+      color: $white;
+      size: 20px;
+      repeat: no-repeat;
+    }
     text-align: center;
+
+    $colors: 'red', 'blue', 'purple', 'green';
+    @each $c in $colors {
+      &.#{$c} {
+        background-image: url('../imgs/#{$c}-balloon.png');
+      }
+    }
   }
 }
 

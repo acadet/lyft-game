@@ -56,15 +56,15 @@ class HomePresenter
 
   onPickup: (e) ->
     o =
-      zone: e
-      user: @userEngine.showRandom()
+      zone: e.getZone()
+      user: @userEngine.showRandom(e.getZone().getColor())
     @currentRides[e.getZone().getId()] = o
     @pickupSound.play()
 
   onMissedDrop: (e) ->
     o = @currentRides[e.getId()]
     @userEngine.hide(o.user)
-    delete @currentRides[id]
+    delete @currentRides[e.getId()]
 
   onDrop: (e) ->
     id = e.getZone().getId()
@@ -74,5 +74,7 @@ class HomePresenter
     @dropSound.play()
 
   onGameOver: (e) ->
+    return if @isOver
+    @isOver = true
     @rideEngine.stop()
     @popupManager.showEnding(Date.now() - @startTime)

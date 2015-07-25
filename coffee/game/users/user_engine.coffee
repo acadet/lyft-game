@@ -14,7 +14,7 @@ class UserEngine
       o.id = id++
       @users.push o
 
-  showRandom: () ->
+  showRandom: (color) ->
     return if @activeSize is @users.length
 
     id = -1
@@ -22,7 +22,13 @@ class UserEngine
       id = Math.round(Math.random() * (@users.length - 1))
 
     u = @users[id]
+    u.color = color
     @dest.append(Mustache.render(@template, u))
+    @dest.find(@elementSelector).each (i, e) =>
+      parsedId = parseInt($(e).data('id'))
+      if parsedId is id
+        $(e).addClass(color)
+        return false
     @active[id] = u
     @activeSize++
     return id
@@ -33,4 +39,5 @@ class UserEngine
       parsedId = parseInt($(e).data('id'))
       if parsedId is id
         delete @active[id]
-        $(e).remove()
+        $(e).parent().remove()
+        return false
