@@ -25,6 +25,7 @@ module.exports = function (grunt) {
                         // Utils
                         'coffee/utils/event_bus.coffee',
                         // Helpers
+                        'coffee/helpers/browser_helper.coffee',
                         'coffee/helpers/double_helper.coffee',
                         'coffee/helpers/point_helper.coffee',
                         // Structs

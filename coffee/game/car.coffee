@@ -68,13 +68,14 @@ class Car
 
     callback = () => @_moveTo(target)
 
-    neighborhoodLimit = @grid.getBlockSize() - @grid.getStreetSize() / 2
+    neighborhoodWidthLimit = @grid.getBlockWidth() - @grid.getStreetSize() / 2
+    neighborhoodHeightLimit = @grid.getBlockHeight() - @grid.getStreetSize() / 2
 
     verticalMove = () =>
       nextPosition = null
       orientation = null
 
-      statement = Math.abs(target.getY() - @currentPosition.getY()) < neighborhoodLimit
+      statement = Math.abs(target.getY() - @currentPosition.getY()) < neighborhoodHeightLimit
       statement &= DoubleHelper.compare(target.getX(), @currentPosition.getX())
       if statement
         nextPosition = target
@@ -97,7 +98,7 @@ class Car
       nextPosition = null
       orientation = null
 
-      statement = Math.abs(target.getX() - @currentPosition.getX()) < neighborhoodLimit
+      statement = Math.abs(target.getX() - @currentPosition.getX()) < neighborhoodWidthLimit
       statement &= DoubleHelper.compare(target.getY(), @currentPosition.getY())
       if statement
         nextPosition = target
@@ -127,9 +128,9 @@ class Car
       else if DoubleHelper.compare(target.getY(), @currentPosition.getY())
         # Same horizontal alignment
         horizontalMove()
-      else if Math.abs(target.getX() - @currentPosition.getX()) < neighborhoodLimit
+      else if Math.abs(target.getX() - @currentPosition.getX()) < neighborhoodWidthLimit
         verticalMove()
-      else if Math.abs(target.getY() - @currentPosition.getY()) < neighborhoodLimit
+      else if Math.abs(target.getY() - @currentPosition.getY()) < neighborhoodHeightLimit
         horizontalMove()
       else
         shouldMoveHorizontal = Math.round(Math.random()) is 0
