@@ -694,7 +694,7 @@ USER_SOURCE = [
     profile_picture_src: 'zimmer.jpg',
     location: 'Greenwhich',
     music: 'Bob Dylan, CCR',
-    likes: 'Rock n roll, Lyft <3'
+    likes: 'Rock n roll, hiking, Lyft <3'
   }, {
     name: 'Kristin',
     profile_picture_src: 'thomas.jpg',
@@ -725,6 +725,18 @@ USER_SOURCE = [
     location: 'LA',
     music: 'Woodkid, The White Stripes',
     likes: 'Wilson, running, Ryan'
+  }, {
+    name: 'Bill',
+    profile_picture_src: 'murray.jpg',
+    location: 'Chicago',
+    music: 'Chuck Berry, Duck Ellington',
+    likes: 'I\'m a nut, but not just a nut.'
+  }, {
+    name: 'Saoirse',
+    profile_picture_src: 'ronan.jpg',
+    location: 'NYC',
+    music: 'Agnes Obel, Crystal Fighters',
+    likes: 'Bakery, charity'
   }
 ];
 
@@ -1332,10 +1344,15 @@ HomePresenter = (function() {
   function HomePresenter() {}
 
   HomePresenter.prototype._initCar = function() {
-    var c;
+    var c, ratio, speed;
     c = this.grid.getSnap().image('imgs/car.png', 0, 0, 20, 20);
     c.addClass('js-car');
-    return this.car = new Car('.js-car', this.grid, CONFIG.carSpeed);
+    speed = CONFIG.carSpeed;
+    ratio = Math.max(this.grid.getBlockWidth(), this.grid.getBlockHeight()) / 800;
+    if (ratio > 1) {
+      speed *= ratio;
+    }
+    return this.car = new Car('.js-car', this.grid, speed);
   };
 
   HomePresenter.prototype._initRideEngine = function() {
