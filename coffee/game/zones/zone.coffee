@@ -85,7 +85,10 @@ class Zone
 
   @provideColor: () ->
     randomIndex = () => Math.round(Math.random() * (Zone.colors.length - 1))
-    return Zone.colors[randomIndex()].label if Zone.colorInUse == Zone.colors.length
+
+    if Zone.colorInUse >= Zone.colors.length
+      Zone.colorInUse++
+      return Zone.colors[randomIndex()].label
 
     while true
       color = Zone.colors[randomIndex()]
