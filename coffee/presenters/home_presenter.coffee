@@ -36,6 +36,10 @@ class HomePresenter
     EventBus.get('ScoreManager').register(IncreaseDifficultyEvent.NAME, (z) => @onIncreasingDifficulty(z))
 
   onStart: () ->
+    if BrowserHelper.isMozilla()
+      $('.js-map').css
+        width: $('.js-map').parent().width()
+        height: $('.js-map').parent().height()
     @grid = new Grid('.js-map', CONFIG.blockNumber, CONFIG.streetSize)
     @grid.render()
 
