@@ -703,6 +703,12 @@ USER_SOURCE = [
     location: 'London',
     music: 'The Stranglers, The Police',
     likes: 'Planes, Budapest'
+  }, {
+    name: 'Tom',
+    profile_picture_src: 'hanks.jpg',
+    location: 'LA',
+    music: 'Woodkid, The White Stripes',
+    likes: 'Wilson, running, Ryan'
   }
 ];
 
@@ -862,7 +868,8 @@ Zone = (function() {
         return Math.round(Math.random() * (Zone.colors.length - 1));
       };
     })(this);
-    if (Zone.colorInUse === Zone.colors.length) {
+    if (Zone.colorInUse >= Zone.colors.length) {
+      Zone.colorInUse++;
       return Zone.colors[randomIndex()].label;
     }
     while (true) {
