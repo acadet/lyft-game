@@ -224,6 +224,8 @@ Point = (function() {
 })();
 
 Grid = (function() {
+  Grid.TARGET_TOLERANCE = 20;
+
   Grid.FILL_COLOR = '#fff';
 
   Grid.STROKE_COLOR = '#EAE2D8';
@@ -317,13 +319,13 @@ Grid = (function() {
     var i, j, m, n, ref, ref1, x, y;
     for (i = m = 0, ref = this.verticalStreetNumber; 0 <= ref ? m < ref : m > ref; i = 0 <= ref ? ++m : --m) {
       x = i * this.blockSize + this.streetSize / 2;
-      if (DoubleHelper.compare(position.getX(), x, this.streetSize / 2)) {
+      if (DoubleHelper.compare(position.getX(), x, this.streetSize / 2 + Grid.TARGET_TOLERANCE)) {
         return true;
       }
     }
     for (j = n = 0, ref1 = this.horizontalStreetNumber; 0 <= ref1 ? n < ref1 : n > ref1; j = 0 <= ref1 ? ++n : --n) {
       y = j * this.blockSize + this.streetSize / 2;
-      if (DoubleHelper.compare(position.getY(), y, this.streetSize / 2)) {
+      if (DoubleHelper.compare(position.getY(), y, this.streetSize / 2 + Grid.TARGET_TOLERANCE)) {
         return true;
       }
     }
@@ -359,7 +361,7 @@ Grid = (function() {
     x = position.getX();
     for (i = m = 0, ref = this.verticalStreetNumber; 0 <= ref ? m < ref : m > ref; i = 0 <= ref ? ++m : --m) {
       a = i * this.blockSize + this.streetSize / 2;
-      if (DoubleHelper.compare(a, position.getX(), this.streetSize / 2)) {
+      if (DoubleHelper.compare(a, position.getX(), this.streetSize / 2 + Grid.TARGET_TOLERANCE)) {
         x = a;
         break;
       }
@@ -367,7 +369,7 @@ Grid = (function() {
     y = position.getY();
     for (j = n = 0, ref1 = this.horizontalStreetNumber; 0 <= ref1 ? n < ref1 : n > ref1; j = 0 <= ref1 ? ++n : --n) {
       b = j * this.blockSize + this.streetSize / 2;
-      if (DoubleHelper.compare(b, position.getY(), this.streetSize / 2)) {
+      if (DoubleHelper.compare(b, position.getY(), this.streetSize / 2 + Grid.TARGET_TOLERANCE)) {
         y = b;
         break;
       }
@@ -427,16 +429,14 @@ Grid = (function() {
     return new Point(i * this.blockSize + this.streetSize / 2, position.getY());
   };
 
-  Grid.prototype.shouldIMoveHorizontal = function(start, end) {
-    return Math.abs(end.getY() - start.getY()) < this.blockSize;
-  };
-
   return Grid;
 
 })();
 
 Car = (function() {
-  var Orientation, StreetDirection;
+  var MAX_CALL_STACK, Orientation, StreetDirection;
+
+  MAX_CALL_STACK = 30;
 
   StreetDirection = (function() {
     function StreetDirection() {}
@@ -478,6 +478,13 @@ Car = (function() {
     this.currentAnimation = null;
   }
 
+  Car.prototype._stopAnimation = function() {
+    if (this.currentAnimation != null) {
+      clearTimeout(this.currentAnimation);
+      return this.currentAnimation = null;
+    }
+  };
+
   Car.prototype._refreshPosition = function() {
     this.source.attr('x', this.currentPosition.getX() - this.carWidth / 2);
     return this.source.attr('y', this.currentPosition.getY() - this.carHeight / 2);
@@ -509,6 +516,11 @@ Car = (function() {
 
   Car.prototype._moveTo = function(target) {
     var callback, horizontalMove, neighborhoodLimit, shouldMoveHorizontal, verticalMove;
+    if (this.callStack >= MAX_CALL_STACK) {
+      this._stopAnimation();
+      return;
+    }
+    this.callStack++;
     if (PointHelper.compare(this.currentPosition, target)) {
       return;
     }
@@ -615,10 +627,8 @@ Car = (function() {
     if (!this.grid.isWithinAStreet(target)) {
       return;
     }
-    if (this.currentAnimation != null) {
-      clearTimeout(this.currentAnimation);
-      this.currentAnimation = null;
-    }
+    this.callStack = 0;
+    this._stopAnimation();
     return this._moveTo(this.grid.realign(target));
   };
 
@@ -824,7 +834,7 @@ Zone = (function() {
   Zone.prototype.postVanished = function() {};
 
   Zone.prototype.isNearMe = function(point) {
-    return PointHelper.compare(point, this.position, this.grid.getStreetSize() / 2);
+    return PointHelper.compare(point, this.position, Zone.SIZE);
   };
 
   Zone.prototype.show = function() {

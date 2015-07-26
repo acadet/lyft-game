@@ -1,5 +1,7 @@
 src=../src/
 
+all: clean build
+
 build:
 	cp -r $(src)bower_components .
 	cp -r $(src)css .
