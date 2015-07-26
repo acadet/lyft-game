@@ -8,8 +8,8 @@ class Grid
     @blockSize = blockSize
     @streetSize = streetSize
 
-    @gridWidth = @source.outerWidth()
-    @gridHeight = @source.outerHeight()
+    @gridWidth = @source.width() - (@source.outerWidth() % @blockSize)
+    @gridHeight = @source.height() - (@source.outerHeight() % @blockSize)
     @verticalStreetNumber = Math.floor(@gridWidth / @blockSize) + 1
     @horizontalStreetNumber = Math.floor(@gridHeight / @blockSize) + 1
 
