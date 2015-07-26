@@ -17,6 +17,22 @@ class Zone
     {
       label: 'green'
       inUse: false
+    },
+    {
+      label: 'pink'
+      inUse: false
+    },
+    {
+      label: 'lemon'
+      inUse: false
+    },
+    {
+      label: 'teal'
+      inUse: false
+    },
+    {
+      label: 'orange'
+      inUse: false
     }
   ]
   @colorInUse = 0

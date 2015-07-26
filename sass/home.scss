@@ -71,8 +71,7 @@ aside {
     }
     text-align: center;
 
-    $colors: 'red', 'blue', 'purple', 'green';
-    @each $c in $colors {
+    @each $c in $zone-colors {
       &.#{$c} {
         background-image: url('../imgs/#{$c}-balloon.png');
       }
