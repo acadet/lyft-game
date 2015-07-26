@@ -1,0 +1,2 @@
+class CarMoveEvent
+  @NAME = 'CarMoveEvent'

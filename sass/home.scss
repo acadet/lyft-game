@@ -1,0 +1,247 @@
+@import "base.scss";
+
+body {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+
+  overflow: hidden;
+}
+
+.body-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+  background: $dark-blue;
+
+  section, aside {
+    display: inline-block;
+    vertical-align: top;
+  }
+}
+
+section {
+  width: 70% - 1%;
+  height: 100%;
+
+  background: $map-background;
+  overflow: hidden;
+
+  svg {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+
+    cursor: pointer;
+  }
+}
+
+aside {
+  width: 30%;
+  height: 100%;
+}
+
+.user-profile-wrapper {
+  display: inline-block;
+
+  width: 48%;
+  height: 50%;
+  padding: 10px;
+  box-sizing: border-box;
+
+  .user-profile {
+    width: 100%;
+    height: 100%;
+    padding: 5px 10px;
+    box-sizing: border-box;
+
+    overflow: auto;
+    background: {
+      position: 5px 5px;
+      color: $white;
+      size: 20px;
+      repeat: no-repeat;
+    }
+    text-align: center;
+
+    $colors: 'red', 'blue', 'purple', 'green';
+    @each $c in $colors {
+      &.#{$c} {
+        background-image: url('../imgs/#{$c}-balloon.png');
+      }
+    }
+  }
+}
+
+.user-profile-wrapper .user-profile {
+  .profile-picture {
+    width: 75px;
+    height: 75px;
+    margin: 10px 0;
+
+    @include border-radius(50%);
+    border: 1px solid $gray;
+    box-shadow: 0 0 0 3px white, 0 0 0 4px $gray;
+  }
+
+  .name {
+    margin: 0;
+
+    font: {
+      size: 1em;
+      family: $main-font;
+      weight: 700;
+    }
+    color: $pink;
+  }
+
+  .about {
+    margin: 10px 0 0 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    list-style-type: none;
+
+    li {
+      @include display(flex);
+      @include align-items(center);
+
+      margin: 10px 0;
+      padding: 0;
+
+      text-align: left;
+
+      > * {
+        display: inline;
+        vertical-align: middle;
+      }
+
+      img {
+        padding: 0 10px 0 0;
+      }
+
+      p {
+        @include flex(1);
+
+        margin: 0;
+
+        color: $black;
+        font: {
+          family: $main-font;
+          size: 0.7em;
+        }
+        line-height: 1.5em;
+      }
+    }
+  }
+}
+
+.score {
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  background: transparentize($black, 0.8);
+
+  p {
+    margin: 1em;
+
+    font: {
+      family: $main-font;
+      size: 1em;
+    }
+    color: $white;
+
+    @include transition(color, .5s, ease-in);
+
+    &.increase {
+      color: $green;
+    }
+
+    &.decrease {
+      color: $red;
+    }
+  }
+}
+
+.popup-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+
+  width: 100%;
+  height: 100%;
+
+  z-index: 100;
+  background-color: transparentize($black, 0.3);
+}
+
+.starting-popup, .ending-popup {
+  position: fixed;
+
+  padding: 20px;
+
+  text-align: center;
+
+  z-index: 101;
+  background-color: $pink;
+
+  p {
+    margin: .5em 1em;
+
+    font: {
+      size: 1.2em;
+      family: $main-font;
+      variant: small-caps;
+    }
+    line-height: 1.5em;
+    color: white;
+  }
+
+  a {
+    text-decoration: none;
+    color: inherit;
+
+    border: none;
+  }
+
+  .confirmation, .play-again {
+    display: inline-block;
+    padding: 10px 15px;
+
+    border: 1px solid $white;
+    cursor: pointer;
+
+    @include transition((color, background-color), .5s, ease-out);
+
+    &:hover {
+      background-color: $white;
+      color: $pink;
+    }
+  }
+
+  .share-wrapper {
+    margin: .5em 1em;
+
+    img {
+      display: inline-block;
+
+      margin: 5px;
+
+      cursor: pointer;
+
+      @include transition(opacity, .5s);
+
+      &:hover {
+        opacity: 0.75;
+      }
+    }
+  }
+}
+

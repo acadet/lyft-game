@@ -1,0 +1,2 @@
+class GameOverEvent
+  @NAME = 'GameOverEvent'

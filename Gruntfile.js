@@ -4,32 +4,104 @@ module.exports = function (grunt) {
     grunt.initConfig({
         // Metadata
         // Task configuration
-        uglify: {
-            options: {
-                banner: '<%= banner %>'
-            },
+        coffee: {
             dist: {
-                src: '<%= concat.dist.dest %>',
-                dest: 'dist/lyft.min.js'
+                options: {
+                    bare: true,
+                    join: true
+                },
+                files: {
+                    'js/main.js': [
+                        'coffee/config.coffee',
+                        // Events
+                        'coffee/events/car_move_event.coffee',
+                        'coffee/events/pickup_event.coffee',
+                        'coffee/events/drop_event.coffee',
+                        'coffee/events/pickup_zone_vanished_event.coffee',
+                        'coffee/events/drop_zone_vanished_event.coffee',
+                        'coffee/events/game_over_event.coffee',
+                        'coffee/events/start_event.coffee',
+                        'coffee/events/increase_difficulty_event.coffee',
+                        // Utils
+                        'coffee/utils/event_bus.coffee',
+                        // Helpers
+                        'coffee/helpers/double_helper.coffee',
+                        'coffee/helpers/point_helper.coffee',
+                        // Structs
+                        'coffee/structs/point.coffee',
+                        // Game
+                        'coffee/game/grid.coffee',
+                        'coffee/game/car.coffee',
+                        'coffee/game/users/source.coffee',
+                        'coffee/game/users/user_engine.coffee',
+                        'coffee/game/zones/zone.coffee',
+                        'coffee/game/zones/pickup_zone.coffee',
+                        'coffee/game/zones/drop_zone.coffee',
+                        'coffee/game/ride_engine.coffee',
+                        'coffee/game/score_manager.coffee',
+                        // Presenters
+                        'coffee/presenters/popup_manager.coffee',
+                        'coffee/presenters/home_presenter.coffee',
+                        'coffee/main.coffee'
+                    ]
+                }
+            }
+        },
+        jade: {
+            dist: {
+                options: {
+                    pretty: true
+                },
+                files: {
+                    'index.html': 'jade/home.jade'
+                }
+            }
+        },
+        sass: {
+            dist: {
+                options: {
+                    sourcemap: 'none'
+                },
+                files: {
+                    'css/home.css': 'sass/home.scss'
+                }
             }
         },
         watch: {
-            gruntfile: {
-                files: '<%= jshint.gruntfile.src %>',
-                tasks: ['jshint:gruntfile']
+            coffee: {
+                files: 'coffee/**/*.coffee',
+                tasks: ['coffee'],
+                options: {
+                    interrupt: true,
+                    atBegin: true
+                }
             },
-            lib_test: {
-                files: '<%= jshint.lib_test.src %>',
-                tasks: ['jshint:lib_test', 'qunit']
+            jade: {
+                files: 'jade/**/*.jade',
+                tasks: ['jade'],
+                options: {
+                    interrupt: true,
+                    atBegin: true
+                }
+            },
+            sass: {
+                files: 'sass/**/*.scss',
+                tasks: ['sass'],
+                options: {
+                    interrupt: true,
+                    atBegin: true
+                }
             }
         }
     });
 
     // These plugins provide necessary tasks
-    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-coffee');
+    grunt.loadNpmTasks('grunt-contrib-jade');
+    grunt.loadNpmTasks('grunt-contrib-sass');
     grunt.loadNpmTasks('grunt-contrib-watch');
 
     // Default task
-    grunt.registerTask('default', []);
+    //grunt.registerTask('default', []);
 };
 
