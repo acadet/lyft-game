@@ -3,7 +3,10 @@ class HomePresenter
   _initCar: () ->
     c = @grid.getSnap().image('imgs/car.png', 0, 0, 20, 20)
     c.addClass('js-car')
-    @car = new Car('.js-car', @grid, CONFIG.carSpeed)
+    speed = CONFIG.carSpeed
+    ratio = Math.max(@grid.getBlockWidth(), @grid.getBlockHeight()) / 800
+    speed *= ratio if ratio > 1
+    @car = new Car('.js-car', @grid, speed)
 
   _initRideEngine: () ->
     @rideEngine = new RideEngine(@grid, @car)
