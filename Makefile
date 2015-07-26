@@ -8,3 +8,12 @@ build:
 	cp -r $(src)js .
 	cp -r $(src)sounds .
 	cp $(src)index.html .
+
+clean:
+	rm -r bower_components
+	rm -r css
+	rm -r fonts
+	rm -r imgs
+	rm -r js
+	rm -r sounds
+	rm index.html
