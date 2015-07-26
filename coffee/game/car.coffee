@@ -1,4 +1,6 @@
 class Car
+  MAX_CALL_STACK = 30
+
   class StreetDirection
     @CROSS = 0
     @HORIZONTAL = 1
@@ -20,6 +22,11 @@ class Car
     @_refreshPosition()
     @currentStreetDirection = StreetDirection.CROSS
     @currentAnimation = null
+
+  _stopAnimation: () ->
+    if @currentAnimation?
+      clearTimeout(@currentAnimation)
+      @currentAnimation = null
 
   _refreshPosition: () ->
     @source.attr('x', @currentPosition.getX() - @carWidth / 2)
@@ -47,6 +54,11 @@ class Car
                                     )
 
   _moveTo: (target) ->
+    if @callStack >= MAX_CALL_STACK
+      @_stopAnimation()
+      return
+
+    @callStack++
     if PointHelper.compare(@currentPosition, target)
       # I am on spot
       return
@@ -138,8 +150,7 @@ class Car
   requestMove: (target) ->
     return unless @grid.isWithinAStreet(target)
 
-    if @currentAnimation?
-      clearTimeout(@currentAnimation)
-      @currentAnimation = null
+    @callStack = 0
+    @_stopAnimation()
 
     @_moveTo(@grid.realign(target))
