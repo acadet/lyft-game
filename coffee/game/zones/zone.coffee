@@ -62,7 +62,7 @@ class Zone
     # TO IMPL
 
   isNearMe: (point) ->
-    PointHelper.compare(point, @position, @grid.getStreetSize() / 2)
+    PointHelper.compare(point, @position, Zone.SIZE)
 
   show: () ->
     @position = @grid.randomPosition()
