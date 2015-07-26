@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Lyft Game</title>
+    <link href="http://fonts.googleapis.com/css?family=Lato:400, 700" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/home.css">
+  </head>
+  <body>
+    <div class="body-wrapper">
+      <section>
+        <svg class="js-map"></svg>
+      </section>
+      <aside class="js-user-list"></aside>
+    </div>
+    <div class="score">
+      <p class="js-score"></p>
+    </div>
+    <div class="popup-wrapper js-popup-wrapper hidden"></div>
+    <div class="starting-popup js-starting-popup hidden">
+      <p>Ever wanted to be a Lyft driver? Here you go!<br>Try to pick up riders and drop them as fast as possible!<br>Click anywhere on a street to move your car to this spot.</p>
+      <p class="confirmation js-confirmation">Alright! I'm ready!!</p>
+    </div>
+    <div class="ending-popup js-ending-popup hidden">
+      <p>Awwww :(<br>—Game over—<br>Thanks for playing!</p>
+      <p class="js-game-countdown">You played for:</p>
+      <p class="js-game-max-balance">You max balance was: $</p>
+      <div class="share-wrapper"><a href="mailto:?subject=Wanna be a Lyft driver&body=Hey mate, check it out this super cool game: https://acadet.github.io/lyft"><img src="imgs/email.png" class="email js-email"></a><a target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=https://acadet.github.io/lyft"><img src="imgs/facebook.png" class="facebook js-facebook"></a><a target="_blank" href="https://twitter.com/intent/tweet?text=Wanna be a Lyft driver?&url=https://acadet.github.io/lyft"><img src="imgs/twitter.png" class="twitter js-twitter"></a>
+      </div>
+      <p class="play-again js-play-again"><a href="https://acadet.github.io/lyft">Play again?</a></p>
+    </div>
+    <script id="template-user-profile" type="x-tmpl-mustache">
+      <div class="user-profile-wrapper">
+        <div data-id="{{id}}" class="user-profile js-user-card"><img src="imgs/users/{{profile_picture_src}}" class="profile-picture">
+          <p class="name">{{name}}</p>
+          <ul class="about">
+            <li class="location"><img src="imgs/ic_location.png">
+              <p>{{location}}</p>
+            </li>
+            <li class="music"><img src="imgs/ic_music.png">
+              <p>{{music}}</p>
+            </li>
+            <li class="likes"><img src="imgs/ic_likes.png">
+              <p>{{likes}}</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </script>
+    <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script type="text/javascript" src="bower_components/jqueryui/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="bower_components/snap.svg/dist/snap.svg-min.js"></script>
+    <script type="text/javascript" src="bower_components/mustache.js/mustache.min.js"></script>
+    <script type="text/javascript" src="js/main.js"></script>
+  </body>
+</html>
