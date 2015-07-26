@@ -3,6 +3,7 @@
 
 body {
   width: 100%;
+  height: 100%;
   margin: 0;
   padding: 0;
   overflow: hidden; }
@@ -60,6 +61,14 @@ aside {
       background-image: url("../imgs/purple-balloon.png"); }
     .user-profile-wrapper .user-profile.green {
       background-image: url("../imgs/green-balloon.png"); }
+    .user-profile-wrapper .user-profile.pink {
+      background-image: url("../imgs/pink-balloon.png"); }
+    .user-profile-wrapper .user-profile.teal {
+      background-image: url("../imgs/teal-balloon.png"); }
+    .user-profile-wrapper .user-profile.lemon {
+      background-image: url("../imgs/lemon-balloon.png"); }
+    .user-profile-wrapper .user-profile.orange {
+      background-image: url("../imgs/orange-balloon.png"); }
 
 .user-profile-wrapper .user-profile .profile-picture {
   width: 75px;

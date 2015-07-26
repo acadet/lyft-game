@@ -1,9 +1,9 @@
-var CONFIG, Car, CarMoveEvent, DoubleHelper, DropEvent, DropZone, DropZoneVanishedEvent, EventBus, GameOverEvent, Grid, HomePresenter, IncreaseDifficultyEvent, PickupEvent, PickupZone, PickupZoneVanishedEvent, Point, PointHelper, PopupManager, RideEngine, ScoreManager, StartEvent, USER_SOURCE, UserEngine, Zone, homeController,
+var BrowserHelper, CONFIG, Car, CarMoveEvent, DoubleHelper, DropEvent, DropZone, DropZoneVanishedEvent, EventBus, GameOverEvent, Grid, HomePresenter, IncreaseDifficultyEvent, PickupEvent, PickupZone, PickupZoneVanishedEvent, Point, PointHelper, PopupManager, RideEngine, ScoreManager, StartEvent, USER_SOURCE, UserEngine, Zone, homeController,
   extend = function(child, parent) { for (var key in parent) { if (hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
   hasProp = {}.hasOwnProperty;
 
 CONFIG = {
-  blockSize: 200,
+  blockNumber: 4,
   streetSize: 10,
   carSpeed: 10 * 1000,
   pickupFrequency: 5 * 1000,
@@ -166,6 +166,17 @@ EventBus = (function() {
 
 })();
 
+BrowserHelper = (function() {
+  function BrowserHelper() {}
+
+  BrowserHelper.isMozilla = function() {
+    return /mozilla/.test(navigator.userAgent.toLowerCase()) && !/webkit/.test(navigator.userAgent.toLowerCase());
+  };
+
+  return BrowserHelper;
+
+})();
+
 DoubleHelper = (function() {
   function DoubleHelper() {}
 
@@ -230,15 +241,16 @@ Grid = (function() {
 
   Grid.STROKE_COLOR = '#EAE2D8';
 
-  function Grid(source, blockSize, streetSize) {
+  function Grid(source, blockNumber, streetSize) {
     this.source = $(source);
     this.snap = Snap(source);
-    this.blockSize = blockSize;
     this.streetSize = streetSize;
-    this.gridWidth = this.source.width() - (this.source.outerWidth() % this.blockSize);
-    this.gridHeight = this.source.height() - (this.source.outerHeight() % this.blockSize);
-    this.verticalStreetNumber = Math.floor(this.gridWidth / this.blockSize) + 1;
-    this.horizontalStreetNumber = Math.floor(this.gridHeight / this.blockSize) + 1;
+    this.gridWidth = this.source.width();
+    this.gridHeight = this.source.height();
+    this.blockWidth = Math.floor(this.gridWidth / blockNumber);
+    this.blockHeight = Math.floor(this.gridHeight / blockNumber);
+    this.verticalStreetNumber = blockNumber + 1;
+    this.horizontalStreetNumber = blockNumber + 1;
   }
 
   Grid.prototype.getSource = function() {
@@ -253,19 +265,22 @@ Grid = (function() {
     return this.streetSize;
   };
 
-  Grid.prototype.getBlockSize = function() {
-    return this.blockSize;
+  Grid.prototype.getBlockWidth = function() {
+    return this.blockWidth;
+  };
+
+  Grid.prototype.getBlockHeight = function() {
+    return this.blockHeight;
   };
 
   Grid.prototype.render = function() {
-    var horizontalStreet, i, j, m, n, ref, ref1, results, square, verticalStreet, z;
+    var horizontalStreet, i, j, m, n, ref, ref1, results, square, verticalStreet;
     for (i = m = 0, ref = Math.max(this.horizontalStreetNumber, this.verticalStreetNumber); 0 <= ref ? m < ref : m > ref; i = 0 <= ref ? ++m : --m) {
-      z = i * this.blockSize;
       if (!(i >= this.horizontalStreetNumber)) {
-        horizontalStreet = this.snap.rect(0, z, this.gridWidth, this.streetSize);
+        horizontalStreet = this.snap.rect(0, i * this.blockHeight, this.gridWidth, this.streetSize);
       }
       if (!(i >= this.verticalStreetNumber)) {
-        verticalStreet = this.snap.rect(z, 0, this.streetSize, this.gridHeight);
+        verticalStreet = this.snap.rect(i * this.blockWidth, 0, this.streetSize, this.gridHeight);
       }
       horizontalStreet.attr({
         fill: Grid.FILL_COLOR,
@@ -282,7 +297,7 @@ Grid = (function() {
         var p, ref2, results1;
         results1 = [];
         for (j = p = 0, ref2 = this.horizontalStreetNumber; 0 <= ref2 ? p < ref2 : p > ref2; j = 0 <= ref2 ? ++p : --p) {
-          square = this.snap.circle(i * this.blockSize + this.streetSize / 2, j * this.blockSize + this.streetSize / 2, this.streetSize);
+          square = this.snap.circle(i * this.blockWidth + this.streetSize / 2, j * this.blockHeight + this.streetSize / 2, this.streetSize);
           results1.push(square.attr({
             fill: Grid.FILL_COLOR
           }));
@@ -297,7 +312,7 @@ Grid = (function() {
     var i, j;
     i = Math.round(Math.random() * (this.verticalStreetNumber - 1));
     j = Math.round(Math.random() * (this.horizontalStreetNumber - 1));
-    return new Point(i * this.blockSize + this.streetSize / 2, j * this.blockSize + this.streetSize / 2);
+    return new Point(i * this.blockWidth + this.streetSize / 2, j * this.blockHeight + this.streetSize / 2);
   };
 
   Grid.prototype.randomPosition = function() {
@@ -307,9 +322,9 @@ Grid = (function() {
     y = null;
     if (isHorizontal) {
       x = Math.round(Math.random() * this.gridWidth);
-      y = Math.round(Math.random() * (this.horizontalStreetNumber - 1)) * this.blockSize + this.streetSize / 2;
+      y = Math.round(Math.random() * (this.horizontalStreetNumber - 1)) * this.blockHeight + this.streetSize / 2;
     } else {
-      x = Math.round(Math.random() * (this.verticalStreetNumber - 1)) * this.blockSize + this.streetSize / 2;
+      x = Math.round(Math.random() * (this.verticalStreetNumber - 1)) * this.blockWidth + this.streetSize / 2;
       y = Math.round(Math.random() * this.gridHeight);
     }
     return new Point(x, y);
@@ -318,13 +333,13 @@ Grid = (function() {
   Grid.prototype.isWithinAStreet = function(position) {
     var i, j, m, n, ref, ref1, x, y;
     for (i = m = 0, ref = this.verticalStreetNumber; 0 <= ref ? m < ref : m > ref; i = 0 <= ref ? ++m : --m) {
-      x = i * this.blockSize + this.streetSize / 2;
+      x = i * this.blockWidth + this.streetSize / 2;
       if (DoubleHelper.compare(position.getX(), x, this.streetSize / 2 + Grid.TARGET_TOLERANCE)) {
         return true;
       }
     }
     for (j = n = 0, ref1 = this.horizontalStreetNumber; 0 <= ref1 ? n < ref1 : n > ref1; j = 0 <= ref1 ? ++n : --n) {
-      y = j * this.blockSize + this.streetSize / 2;
+      y = j * this.blockHeight + this.streetSize / 2;
       if (DoubleHelper.compare(position.getY(), y, this.streetSize / 2 + Grid.TARGET_TOLERANCE)) {
         return true;
       }
@@ -336,7 +351,7 @@ Grid = (function() {
     var a, b, i, j, m, n, ref, ref1, x, y;
     a = false;
     for (i = m = 0, ref = this.verticalStreetNumber; 0 <= ref ? m < ref : m > ref; i = 0 <= ref ? ++m : --m) {
-      x = i * this.blockSize + this.streetSize / 2;
+      x = i * this.blockWidth + this.streetSize / 2;
       if (DoubleHelper.compare(position.getX(), x, this.streetSize / 2)) {
         a = true;
         break;
@@ -347,7 +362,7 @@ Grid = (function() {
     }
     b = false;
     for (j = n = 0, ref1 = this.horizontalStreetNumber; 0 <= ref1 ? n < ref1 : n > ref1; j = 0 <= ref1 ? ++n : --n) {
-      y = j * this.blockSize + this.streetSize / 2;
+      y = j * this.blockHeight + this.streetSize / 2;
       if (DoubleHelper.compare(position.getY(), y, this.streetSize / 2)) {
         b = true;
         break;
@@ -360,7 +375,7 @@ Grid = (function() {
     var a, b, i, j, m, n, ref, ref1, x, y;
     x = position.getX();
     for (i = m = 0, ref = this.verticalStreetNumber; 0 <= ref ? m < ref : m > ref; i = 0 <= ref ? ++m : --m) {
-      a = i * this.blockSize + this.streetSize / 2;
+      a = i * this.blockWidth + this.streetSize / 2;
       if (DoubleHelper.compare(a, position.getX(), this.streetSize / 2 + Grid.TARGET_TOLERANCE)) {
         x = a;
         break;
@@ -368,7 +383,7 @@ Grid = (function() {
     }
     y = position.getY();
     for (j = n = 0, ref1 = this.horizontalStreetNumber; 0 <= ref1 ? n < ref1 : n > ref1; j = 0 <= ref1 ? ++n : --n) {
-      b = j * this.blockSize + this.streetSize / 2;
+      b = j * this.blockHeight + this.streetSize / 2;
       if (DoubleHelper.compare(b, position.getY(), this.streetSize / 2 + Grid.TARGET_TOLERANCE)) {
         y = b;
         break;
@@ -380,53 +395,53 @@ Grid = (function() {
   Grid.prototype.getPrevHorizontalCross = function(position) {
     var j, y;
     y = position.getY();
-    if (y % this.blockSize <= this.streetSize) {
-      y -= y % this.blockSize;
+    if (y % this.blockHeight <= this.streetSize) {
+      y -= y % this.blockHeight;
     }
-    j = Math.ceil(y / this.blockSize) - 1;
+    j = Math.ceil(y / this.blockHeight) - 1;
     if (j < 0) {
       return position;
     }
-    return new Point(position.getX(), j * this.blockSize + this.streetSize / 2);
+    return new Point(position.getX(), j * this.blockHeight + this.streetSize / 2);
   };
 
   Grid.prototype.getNextHorizontalCross = function(position) {
     var j, y;
     y = position.getY();
-    if (y % this.blockSize === 0) {
+    if (y % this.blockHeight === 0) {
       y++;
     }
-    j = Math.ceil(y / this.blockSize);
+    j = Math.ceil(y / this.blockHeight);
     if (j >= this.horizontalStreetNumber) {
       return position;
     }
-    return new Point(position.getX(), j * this.blockSize + this.streetSize / 2);
+    return new Point(position.getX(), j * this.blockHeight + this.streetSize / 2);
   };
 
   Grid.prototype.getPrevVerticalCross = function(position) {
     var i, x;
     x = position.getX();
-    if (x % this.blockSize <= this.streetSize) {
-      x -= x % this.blockSize;
+    if (x % this.blockWidth <= this.streetSize) {
+      x -= x % this.blockWidth;
     }
-    i = Math.ceil(x / this.blockSize) - 1;
+    i = Math.ceil(x / this.blockWidth) - 1;
     if (i < 0) {
       return position;
     }
-    return new Point(i * this.blockSize + this.streetSize / 2, position.getY());
+    return new Point(i * this.blockWidth + this.streetSize / 2, position.getY());
   };
 
   Grid.prototype.getNextVerticalCross = function(position) {
     var i, x;
     x = position.getX();
-    if (x % this.blockSize === 0) {
+    if (x % this.blockWidth === 0) {
       x++;
     }
-    i = Math.ceil(x / this.blockSize);
+    i = Math.ceil(x / this.blockWidth);
     if (i >= this.verticalStreetNumber) {
       return position;
     }
-    return new Point(i * this.blockSize + this.streetSize / 2, position.getY());
+    return new Point(i * this.blockWidth + this.streetSize / 2, position.getY());
   };
 
   return Grid;
@@ -515,7 +530,7 @@ Car = (function() {
   };
 
   Car.prototype._moveTo = function(target) {
-    var callback, horizontalMove, neighborhoodLimit, shouldMoveHorizontal, verticalMove;
+    var callback, horizontalMove, neighborhoodHeightLimit, neighborhoodWidthLimit, shouldMoveHorizontal, verticalMove;
     if (this.callStack >= MAX_CALL_STACK) {
       this._stopAnimation();
       return;
@@ -532,13 +547,14 @@ Car = (function() {
         return _this._moveTo(target);
       };
     })(this);
-    neighborhoodLimit = this.grid.getBlockSize() - this.grid.getStreetSize() / 2;
+    neighborhoodWidthLimit = this.grid.getBlockWidth() - this.grid.getStreetSize() / 2;
+    neighborhoodHeightLimit = this.grid.getBlockHeight() - this.grid.getStreetSize() / 2;
     verticalMove = (function(_this) {
       return function() {
         var nextPosition, orientation, statement;
         nextPosition = null;
         orientation = null;
-        statement = Math.abs(target.getY() - _this.currentPosition.getY()) < neighborhoodLimit;
+        statement = Math.abs(target.getY() - _this.currentPosition.getY()) < neighborhoodHeightLimit;
         statement &= DoubleHelper.compare(target.getX(), _this.currentPosition.getX());
         if (statement) {
           nextPosition = target;
@@ -565,7 +581,7 @@ Car = (function() {
         var nextPosition, orientation, statement;
         nextPosition = null;
         orientation = null;
-        statement = Math.abs(target.getX() - _this.currentPosition.getX()) < neighborhoodLimit;
+        statement = Math.abs(target.getX() - _this.currentPosition.getX()) < neighborhoodWidthLimit;
         statement &= DoubleHelper.compare(target.getY(), _this.currentPosition.getY());
         if (statement) {
           nextPosition = target;
@@ -596,9 +612,9 @@ Car = (function() {
         return verticalMove();
       } else if (DoubleHelper.compare(target.getY(), this.currentPosition.getY())) {
         return horizontalMove();
-      } else if (Math.abs(target.getX() - this.currentPosition.getX()) < neighborhoodLimit) {
+      } else if (Math.abs(target.getX() - this.currentPosition.getX()) < neighborhoodWidthLimit) {
         return verticalMove();
-      } else if (Math.abs(target.getY() - this.currentPosition.getY()) < neighborhoodLimit) {
+      } else if (Math.abs(target.getY() - this.currentPosition.getY()) < neighborhoodHeightLimit) {
         return horizontalMove();
       } else {
         shouldMoveHorizontal = Math.round(Math.random()) === 0;
@@ -648,7 +664,7 @@ USER_SOURCE = [
     profile_picture_src: 'de_niro.jpg',
     location: 'NYC',
     music: 'Eric Clapton, Rolling Stones',
-    likes: 'Pasta, taxis, Italy <3'
+    likes: 'Pasta, taxis, my wife'
   }, {
     name: 'Ewan',
     profile_picture_src: 'mcgregor.jpg',
@@ -792,6 +808,18 @@ Zone = (function() {
       inUse: false
     }, {
       label: 'green',
+      inUse: false
+    }, {
+      label: 'pink',
+      inUse: false
+    }, {
+      label: 'lemon',
+      inUse: false
+    }, {
+      label: 'teal',
+      inUse: false
+    }, {
+      label: 'orange',
       inUse: false
     }
   ];
@@ -1361,7 +1389,13 @@ HomePresenter = (function() {
   };
 
   HomePresenter.prototype.onStart = function() {
-    this.grid = new Grid('.js-map', CONFIG.blockSize, CONFIG.streetSize);
+    if (BrowserHelper.isMozilla()) {
+      $('.js-map').css({
+        width: $('.js-map').parent().width(),
+        height: $('.js-map').parent().height()
+      });
+    }
+    this.grid = new Grid('.js-map', CONFIG.blockNumber, CONFIG.streetSize);
     this.grid.render();
     this.currentRides = {};
     this._initCar();
