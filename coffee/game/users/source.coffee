@@ -46,7 +46,7 @@ USER_SOURCE = [
     profile_picture_src: 'zimmer.jpg',
     location: 'Greenwhich',
     music: 'Bob Dylan, CCR',
-    likes: 'Rock n roll, Lyft <3'
+    likes: 'Rock n roll, hiking, Lyft <3'
   },
   {
     name: 'Kristin',
@@ -82,5 +82,19 @@ USER_SOURCE = [
     location: 'LA',
     music: 'Woodkid, The White Stripes',
     likes: 'Wilson, running, Ryan'
+  },
+  {
+    name: 'Bill',
+    profile_picture_src: 'murray.jpg',
+    location: 'Chicago',
+    music: 'Chuck Berry, Duck Ellington',
+    likes: 'I\'m a nut, but not just a nut.'
+  },
+  {
+    name: 'Saoirse',
+    profile_picture_src: 'ronan.jpg',
+    location: 'NYC',
+    music: 'Agnes Obel, Crystal Fighters',
+    likes: 'Bakery, charity'
   }
 ]
