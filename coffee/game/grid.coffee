@@ -1,4 +1,5 @@
 class Grid
+  @TARGET_TOLERANCE = 20
   @FILL_COLOR = '#fff'
   @STROKE_COLOR = '#EAE2D8'
 
@@ -76,11 +77,11 @@ class Grid
   isWithinAStreet: (position) ->
     for i in [0...@verticalStreetNumber] # Is in a vertical gutter
       x = i * @blockSize + @streetSize / 2
-      return true if DoubleHelper.compare(position.getX(), x, @streetSize / 2)
+      return true if DoubleHelper.compare(position.getX(), x, @streetSize / 2 + Grid.TARGET_TOLERANCE)
 
     for j in [0...@horizontalStreetNumber] # Is in a horizontal gutter
       y = j * @blockSize + @streetSize / 2
-      return true if DoubleHelper.compare(position.getY(), y, @streetSize / 2)
+      return true if DoubleHelper.compare(position.getY(), y, @streetSize / 2 + Grid.TARGET_TOLERANCE)
 
     return false
 
@@ -111,14 +112,14 @@ class Grid
     x = position.getX()
     for i in [0...@verticalStreetNumber]
       a = i * @blockSize + @streetSize / 2
-      if DoubleHelper.compare(a, position.getX(), @streetSize / 2)
+      if DoubleHelper.compare(a, position.getX(), @streetSize / 2 + Grid.TARGET_TOLERANCE)
         x = a
         break
 
     y = position.getY()
     for j in [0...@horizontalStreetNumber]
       b = j * @blockSize + @streetSize / 2
-      if DoubleHelper.compare(b, position.getY(), @streetSize / 2)
+      if DoubleHelper.compare(b, position.getY(), @streetSize / 2 + Grid.TARGET_TOLERANCE)
         y = b
         break
 
@@ -159,6 +160,3 @@ class Grid
     i = Math.ceil(x / @blockSize)
     return position if i >= @verticalStreetNumber
     return new Point(i * @blockSize + @streetSize / 2, position.getY())
-
-  shouldIMoveHorizontal: (start, end) ->
-    return Math.abs(end.getY() - start.getY()) < @blockSize
