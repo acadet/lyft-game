@@ -75,5 +75,12 @@ USER_SOURCE = [
     location: 'London',
     music: 'The Stranglers, The Police',
     likes: 'Planes, Budapest'
+  },
+  {
+    name: 'Tom',
+    profile_picture_src: 'hanks.jpg',
+    location: 'LA',
+    music: 'Woodkid, The White Stripes',
+    likes: 'Wilson, running, Ryan'
   }
 ]
