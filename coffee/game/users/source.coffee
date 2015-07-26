@@ -11,7 +11,7 @@ USER_SOURCE = [
     profile_picture_src: 'de_niro.jpg',
     location: 'NYC',
     music: 'Eric Clapton, Rolling Stones',
-    likes: 'Pasta, taxis, Italy <3'
+    likes: 'Pasta, taxis, my wife'
   },
   {
     name: 'Ewan',
