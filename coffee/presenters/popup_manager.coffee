@@ -24,7 +24,7 @@ class PopupManager
     @_showWrapper()
     @_showPopup(@startPopup)
 
-  showEnding: (duration) ->
+  showEnding: (duration, maxBalance) ->
     inMinutes = Math.round(duration / 1000 / 60)
     content = " #{inMinutes} minute"
     content += "s" if inMinutes > 1
@@ -32,6 +32,7 @@ class PopupManager
 
     @_showWrapper()
     @endPopup.find('.js-game-countdown').first().append(content)
+    @endPopup.find('.js-game-max-balance').first().append(maxBalance)
     @_showPopup(@endPopup)
 
   onConfirmation: () ->

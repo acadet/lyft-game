@@ -10,6 +10,8 @@ body {
 
 .body-wrapper {
   position: absolute;
+  top: 0;
+  left: 0;
 
   width: 100%;
   height: 100%;
@@ -26,8 +28,6 @@ body {
 section {
   width: 70% - 1%;
   height: 100%;
-  padding: 20px;
-  box-sizing: border-box;
 
   background: $map-background;
   overflow: hidden;
@@ -35,6 +35,8 @@ section {
   svg {
     width: 100%;
     height: 100%;
+    padding: 20px;
+    box-sizing: border-box;
 
     cursor: pointer;
   }

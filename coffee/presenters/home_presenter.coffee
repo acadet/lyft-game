@@ -24,6 +24,7 @@ class HomePresenter
                                   )
 
   _initScoreManager: () ->
+    @isOver = false
     @scoreManager = new ScoreManager('.js-score')
     @scoreManager.setMissedPickupFare CONFIG.missedPickupFare
     @scoreManager.setMissedDropFare CONFIG.missedDropFare
@@ -47,8 +48,8 @@ class HomePresenter
     @userEngine = new UserEngine('.js-user-list', '.js-user-card')
 
     $('.js-map').on 'click', (e) =>
-      x = e.pageX - @grid.getSource().offset().left
-      y = e.pageY - @grid.getSource().offset().top
+      x = e.pageX - @grid.getSource().offset().left - parseInt(@grid.getSource().css('padding-left'))
+      y = e.pageY - @grid.getSource().offset().top - parseInt(@grid.getSource().css('padding-top'))
       @car.requestMove(new Point(x, y))
 
     @pickupSound = new Audio('sounds/car.mp3')
@@ -80,7 +81,7 @@ class HomePresenter
     return if @isOver
     @isOver = true
     @rideEngine.stop()
-    @popupManager.showEnding(Date.now() - @startTime)
+    @popupManager.showEnding(Date.now() - @startTime, @scoreManager.getMaxScore())
 
   onIncreasingDifficulty: (e) ->
     @rideEngine.setPickupFrequency(@rideEngine.getPickupFrequency() / 2)

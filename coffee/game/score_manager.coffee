@@ -2,6 +2,7 @@ class ScoreManager
   constructor: (selector) ->
     @displayer = $(selector)
     @currentScore = 50
+    @maxScore = 0
     @nextStep = 300
     @_refreshScore(true)
 
@@ -10,7 +11,9 @@ class ScoreManager
     EventBus.get('RideEngine').register DropEvent.NAME, (z) => @onDrop(z)
 
   _refreshScore: (isIncreasing) ->
+    @maxScore = Math.max(@maxScore, @currentScore)
     if @currentScore < 0
+      @currentScore = 0
       EventBus.get('ScoreManager').post GameOverEvent.NAME, new GameOverEvent()
 
     @displayer.text "$#{@currentScore}"
@@ -23,6 +26,9 @@ class ScoreManager
                 () => @displayer.removeClass('increase decrease'),
                 1200
               )
+
+  getMaxScore: () ->
+    @maxScore
 
   getMissedPickupFare: () ->
     @missedPickupFare
