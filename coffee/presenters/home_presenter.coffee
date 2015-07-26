@@ -36,7 +36,7 @@ class HomePresenter
     EventBus.get('ScoreManager').register(IncreaseDifficultyEvent.NAME, (z) => @onIncreasingDifficulty(z))
 
   onStart: () ->
-    @grid = new Grid('.js-map', CONFIG.blockSize, CONFIG.streetSize)
+    @grid = new Grid('.js-map', CONFIG.blockNumber, CONFIG.streetSize)
     @grid.render()
 
     @currentRides = {}

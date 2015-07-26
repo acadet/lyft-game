@@ -1,5 +1,5 @@
 CONFIG =
-  blockSize: 200
+  blockNumber: 4
   streetSize: 10
   carSpeed: 10 * 1000 # Pixels per milliseconds
   pickupFrequency: 5 * 1000
