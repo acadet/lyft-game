@@ -169,7 +169,7 @@ EventBus = (function() {
 BrowserHelper = (function() {
   function BrowserHelper() {}
 
-  BrowserHelper.isMozilla = function() {
+  BrowserHelper.isFirefox = function() {
     return /mozilla/.test(navigator.userAgent.toLowerCase()) && !/webkit/.test(navigator.userAgent.toLowerCase());
   };
 
@@ -769,7 +769,6 @@ UserEngine = (function() {
       id = Math.round(Math.random() * (this.users.length - 1));
     }
     u = this.users[id];
-    u.color = color;
     this.dest.append(Mustache.render(this.template, u));
     this.dest.find(this.elementSelector).each((function(_this) {
       return function(i, e) {
@@ -1406,7 +1405,7 @@ HomePresenter = (function() {
   };
 
   HomePresenter.prototype.onStart = function() {
-    if (BrowserHelper.isMozilla()) {
+    if (BrowserHelper.isFirefox()) {
       $('.js-map').css({
         width: $('.js-map').parent().width(),
         height: $('.js-map').parent().height()
@@ -1469,7 +1468,9 @@ HomePresenter = (function() {
   };
 
   HomePresenter.prototype.onIncreasingDifficulty = function(e) {
-    this.rideEngine.setPickupFrequency(this.rideEngine.getPickupFrequency() / 2);
+    if (this.rideEngine.getPickupFrequency() > 1) {
+      this.rideEngine.setPickupFrequency(this.rideEngine.getPickupFrequency() / 2);
+    }
     if (this.rideEngine.getPickupDuration() > 3) {
       this.rideEngine.setPickupDuration(this.rideEngine.getPickupDuration() - 1);
       if (this.rideEngine.getPickupDuration() <= this.rideEngine.getPickupAnimationDelay()) {
@@ -1484,7 +1485,7 @@ HomePresenter = (function() {
     }
     this.scoreManager.setMissedPickupFare(Math.round(this.scoreManager.getMissedPickupFare() * 2));
     this.scoreManager.setMissedDropFare(Math.round(this.scoreManager.getMissedDropFare() * 2));
-    this.scoreManager.setSuccessfulDropFare(Math.round(this.scoreManager.getSuccessfulDropFare() * 1.5));
+    this.scoreManager.setSuccessfulDropFare(Math.round(this.scoreManager.getSuccessfulDropFare() * 2));
     return this.scoreManager.setBonusTip(Math.round(this.scoreManager.getBonusTip() * 2));
   };
 
@@ -1492,4 +1493,6 @@ HomePresenter = (function() {
 
 })();
 
-homeController = new HomePresenter().onStart();
+homeController = new HomePresenter();
+
+homeController.onStart();
