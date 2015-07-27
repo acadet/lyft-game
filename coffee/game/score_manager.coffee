@@ -1,9 +1,10 @@
+# Manages score display. Triggers game over too
 class ScoreManager
   constructor: (selector) ->
     @displayer = $(selector)
     @currentScore = 50
     @maxScore = 0
-    @nextStep = 300
+    @nextStep = 300 # Next step before increasing difficulty
     @_refreshScore(true)
 
     EventBus.get('Zone').register PickupZoneVanishedEvent.NAME, (z) => @onMissedPickup(z)
@@ -75,5 +76,6 @@ class ScoreManager
     @_refreshScore(true)
 
     if @currentScore >= @nextStep
+      # Increase difficulty
       @nextStep *= 2
       EventBus.get('ScoreManager').post IncreaseDifficultyEvent.NAME, new IncreaseDifficultyEvent()

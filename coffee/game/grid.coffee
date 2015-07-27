@@ -1,5 +1,6 @@
+# Render grid and provide methods for assisting the car in moving
 class Grid
-  @TARGET_TOLERANCE = 20
+  @TARGET_TOLERANCE = 20 # Tolerance for provided targets (e.g. click near a street)
   @FILL_COLOR = '#fff'
   @STROKE_COLOR = '#EAE2D8'
 
@@ -110,7 +111,7 @@ class Grid
 
     return (a and b)
 
-  # Updates provided position to a "perfect" point in the grid
+  # Updates provided position to a "perfect" point inside the grid
   realign: (position) ->
     x = position.getX()
     for i in [0...@verticalStreetNumber]

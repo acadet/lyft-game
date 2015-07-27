@@ -1,3 +1,4 @@
+# Manages start and end pop ups
 class PopupManager
   constructor: () ->
     @wrapper = $('.js-popup-wrapper')

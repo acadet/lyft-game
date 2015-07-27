@@ -1,3 +1,4 @@
+# Generates pick up and drop zones
 class RideEngine
   @MAX_RIDES = 4
 
@@ -27,6 +28,7 @@ class RideEngine
     @pickupFrequency
 
   setPickupFrequency: (v) ->
+    # Restart generator when updating frequency
     @pickupFrequency = v
     return unless @generator?
     clearInterval(@generator)
@@ -58,6 +60,8 @@ class RideEngine
 
   start: () ->
     @pickupZones = {}
+    # Drop zone = start Time + zone
+    # Start time is used for the bonus tip ratio
     @dropZones = {}
     @idCounter = 0
     @_startGenerating()
@@ -74,12 +78,13 @@ class RideEngine
     dropZoneToRemove = []
     currentRides = Object.keys(@dropZones).length
 
+    # Handle drop zones first, in order to free seats
     for id, wrapper of @dropZones
       if wrapper.zone.isNearMe(@car.getCurrentPosition())
         wrapper.zone.hide()
         speedRatio = (Date.now() - wrapper.startTime) / @dropDuration
         EventBus.get('RideEngine').post(DropEvent.NAME, new DropEvent(wrapper.zone, speedRatio))
-        dropZoneToRemove.push id
+        dropZoneToRemove.push id # Remove from current drop zones
         currentRides--
 
     for id, zone of @pickupZones

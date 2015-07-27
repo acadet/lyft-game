@@ -1,1 +1,2 @@
-homeController = new HomePresenter().onStart()
+homeController = new HomePresenter()
+homeController.onStart()

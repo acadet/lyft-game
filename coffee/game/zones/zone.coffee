@@ -103,6 +103,7 @@ class Zone
     randomIndex = () => Math.round(Math.random() * (Zone.colors.length - 1))
 
     if Zone.colorInUse >= Zone.colors.length
+      # No more free color. Provide a random on
       Zone.colorInUse++
       return Zone.colors[randomIndex()].label
 

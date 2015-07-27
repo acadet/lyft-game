@@ -1,11 +1,16 @@
+# Main class. Creates the different game components and
+# acts as a mediator.
 class HomePresenter
 
   _initCar: () ->
     c = @grid.getSnap().image('imgs/car.png', 0, 0, 20, 20)
     c.addClass('js-car')
+
+    # Increase speed depending on the grid's size
     speed = CONFIG.carSpeed
     ratio = Math.max(@grid.getBlockWidth(), @grid.getBlockHeight()) / 800
     speed *= ratio if ratio > 1
+
     @car = new Car('.js-car', @grid, speed)
 
   _initRideEngine: () ->
@@ -39,13 +44,15 @@ class HomePresenter
     EventBus.get('ScoreManager').register(IncreaseDifficultyEvent.NAME, (z) => @onIncreasingDifficulty(z))
 
   onStart: () ->
-    if BrowserHelper.isMozilla()
+    if BrowserHelper.isFirefox()
+      # SVG tag does not recognize relative sizes using Firefox
       $('.js-map').css
         width: $('.js-map').parent().width()
         height: $('.js-map').parent().height()
     @grid = new Grid('.js-map', CONFIG.blockNumber, CONFIG.streetSize)
     @grid.render()
 
+    # Ride = zone + rider
     @currentRides = {}
 
     @_initCar()
@@ -55,6 +62,7 @@ class HomePresenter
     @userEngine = new UserEngine('.js-user-list', '.js-user-card')
 
     $('.js-map').on 'click', (e) =>
+      # User is moving the car
       x = e.pageX - @grid.getSource().offset().left - parseInt(@grid.getSource().css('padding-left'))
       y = e.pageY - @grid.getSource().offset().top - parseInt(@grid.getSource().css('padding-top'))
       @car.requestMove(new Point(x, y))
@@ -91,8 +99,10 @@ class HomePresenter
     @popupManager.showEnding(Date.now() - @startTime, @scoreManager.getMaxScore())
 
   onIncreasingDifficulty: (e) ->
-    @rideEngine.setPickupFrequency(@rideEngine.getPickupFrequency() / 2)
+    if @rideEngine.getPickupFrequency() > 1
+      @rideEngine.setPickupFrequency(@rideEngine.getPickupFrequency() / 2)
 
+    # Do not decrease pick up and drop durations more than 3s
     if @rideEngine.getPickupDuration() > 3
       @rideEngine.setPickupDuration(@rideEngine.getPickupDuration() - 1)
       if @rideEngine.getPickupDuration() <= @rideEngine.getPickupAnimationDelay()
@@ -103,7 +113,8 @@ class HomePresenter
       if @rideEngine.getDropDuration() <= @rideEngine.getDropAnimationDelay
         @rideEngine.setDropAnimationDelay(0)
 
+    # Increase fares
     @scoreManager.setMissedPickupFare(Math.round(@scoreManager.getMissedPickupFare() * 2))
     @scoreManager.setMissedDropFare(Math.round(@scoreManager.getMissedDropFare() * 2))
-    @scoreManager.setSuccessfulDropFare(Math.round(@scoreManager.getSuccessfulDropFare() * 1.5))
+    @scoreManager.setSuccessfulDropFare(Math.round(@scoreManager.getSuccessfulDropFare() * 2))
     @scoreManager.setBonusTip(Math.round(@scoreManager.getBonusTip() * 2))

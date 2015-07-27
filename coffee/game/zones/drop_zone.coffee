@@ -10,6 +10,7 @@ class DropZone extends Zone
 
   hide: () ->
     super
+    # Free color
     Zone.colorInUse--
     for e in Zone.colors
       if e.label is @getColor()

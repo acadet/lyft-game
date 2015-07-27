@@ -1,11 +1,14 @@
+# Manages car movements
 class Car
   MAX_CALL_STACK = 30
 
+  # Current direction of the car
   class StreetDirection
     @CROSS = 0
     @HORIZONTAL = 1
     @VERTICAL = 2
 
+  # Current orientation of the car (for animating)
   class Orientation
     @UP = 0
     @RIGHT = 1
@@ -32,6 +35,7 @@ class Car
     @source.attr('x', @currentPosition.getX() - @carWidth / 2)
     @source.attr('y', @currentPosition.getY() - @carHeight / 2)
 
+  # Animates car pixel per pixel
   _animateTo: (point, direction, orientation, callback) ->
     if PointHelper.compare(@currentPosition, point)
       callback()
@@ -53,15 +57,17 @@ class Car
                                       1 / @speed
                                     )
 
+  # Moves car from a milestone to another one, within the same neighborhood.
+  # E.g. moving car to a cross street or directly to target
   _moveTo: (target) ->
     if @callStack >= MAX_CALL_STACK
+      # Limit call stack if too many recursive calls
       @_stopAnimation()
       return
 
     @callStack++
-    if PointHelper.compare(@currentPosition, target)
-      # I am on spot
-      return
+
+    return if PointHelper.compare(@currentPosition, target) # I am on spot
 
     if @grid.isACrossStreet(@currentPosition)
       @currentStreetDirection = StreetDirection.CROSS
@@ -77,7 +83,7 @@ class Car
 
       statement = Math.abs(target.getY() - @currentPosition.getY()) < neighborhoodHeightLimit
       statement &= DoubleHelper.compare(target.getX(), @currentPosition.getX())
-      if statement
+      if statement # I can reach target directly (same street and same block)
         nextPosition = target
         if target.getY() <= @currentPosition.getY()
           orientation = Orientation.UP
@@ -100,7 +106,7 @@ class Car
 
       statement = Math.abs(target.getX() - @currentPosition.getX()) < neighborhoodWidthLimit
       statement &= DoubleHelper.compare(target.getY(), @currentPosition.getY())
-      if statement
+      if statement # I can reach target directly (same street and same block)
         nextPosition = target
         if target.getX() <= @currentPosition.getX()
           orientation = Orientation.LEFT
@@ -122,6 +128,7 @@ class Car
     else if @currentStreetDirection is StreetDirection.HORIZONTAL
       horizontalMove()
     else
+      # I am on a cross street
       if DoubleHelper.compare(target.getX(), @currentPosition.getX())
         # Same vertical alignment
         verticalMove()
@@ -129,10 +136,13 @@ class Car
         # Same horizontal alignment
         horizontalMove()
       else if Math.abs(target.getX() - @currentPosition.getX()) < neighborhoodWidthLimit
+        # Same neighborhood and 2 streets from my location
         verticalMove()
       else if Math.abs(target.getY() - @currentPosition.getY()) < neighborhoodHeightLimit
+        # Same neighborhood and 2 streets from my location
         horizontalMove()
       else
+        # Too far. Random behavior
         shouldMoveHorizontal = Math.round(Math.random()) is 0
         if shouldMoveHorizontal
           horizontalMove()
@@ -148,6 +158,7 @@ class Car
   getCurrentPosition: () ->
     @currentPosition
 
+  # User has requested a move
   requestMove: (target) ->
     return unless @grid.isWithinAStreet(target)
 
