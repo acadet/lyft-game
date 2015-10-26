@@ -1,57 +1,57 @@
 doctype html
 html
-  head
-    meta(charset='utf-8')
+    head
+        meta(charset='utf-8')
 
-    title Lyft Game
+        title Lyft Game
 
-    link(href='http://fonts.googleapis.com/css?family=Lato:400, 700', rel='stylesheet', type='text/css')
-    link(rel='stylesheet', href='css/home.css')
-  body
-    .body-wrapper
-      section
-        svg.js-map
+        link(href='http://fonts.googleapis.com/css?family=Lato:400, 700', rel='stylesheet', type='text/css')
+        link(rel='stylesheet', href='css/home.css')
+    body
+        .body-wrapper
+            section
+                svg.js-map
 
-      aside.js-user-list
+            aside.js-user-list
 
-    .score
-      p.js-score
+        .score
+            p.js-score
 
-    .popup-wrapper.js-popup-wrapper.hidden
-    .starting-popup.js-starting-popup.hidden
-      p
-        | Ever wanted to be a Lyft driver? Here you go!
-        br
-        | Try to pick up riders and drop them as fast as possible!
-        br
-        | Click anywhere on a street to move your car to this spot.
-      p.confirmation.js-confirmation Alright! I'm ready!!
+        .popup-wrapper.js-popup-wrapper.hidden
+        .starting-popup.js-starting-popup.hidden
+            p
+                | Ever wanted to be a Lyft driver? Here you go!
+                br
+                | Try to pick up riders and drop them as fast as possible!
+                br
+                | Click anywhere on a street to move your car to this spot.
+            p.confirmation.js-confirmation Alright! I'm ready!!
 
-    .ending-popup.js-ending-popup.hidden
-      p
-        | Awwww :(
-        br
-        | —Game over—
-        br
-        | Thanks for playing!
-      p.js-game-countdown You played for:
-      p.js-game-max-balance You max balance was: $
-      .share-wrapper
-        - var url = 'http://acadet.github.io/lyft/'
-        a&attributes({'href': 'mailto:?subject=Wanna be a Lyft driver&body=Hey mate, check it out this super cool game: ' + url})
-          img.email.js-email(src='imgs/email.png')
-        a(target='_blank')&attributes({'href': 'https://www.facebook.com/sharer/sharer.php?u=' + url})
-          img.facebook.js-facebook(src='imgs/facebook.png')
-        a(target='_blank')&attributes({'href': 'https://twitter.com/intent/tweet?text=Wanna be a Lyft driver? %23LyftGame&url=' + url})
-          img.twitter.js-twitter(src='imgs/twitter.png')
-      p.play-again.js-play-again
-        a&attributes({'href': url}) Play again?
+        .ending-popup.js-ending-popup.hidden
+            p
+                | Awwww :(
+                br
+                | —Game over—
+                br
+                | Thanks for playing!
+            p.js-game-countdown You played for:
+            p.js-game-max-balance You max balance was: $
+            .share-wrapper
+                - var url = 'http://acadet.github.io/lyft-game/'
+                a&attributes({'href': 'mailto:?subject=Wanna be a Lyft driver&body=Hey mate, check it out this super cool game: ' + url})
+                    img.email.js-email(src='imgs/email.png')
+                a(target='_blank')&attributes({'href': 'https://www.facebook.com/sharer/sharer.php?u=' + url})
+                    img.facebook.js-facebook(src='imgs/facebook.png')
+                a(target='_blank')&attributes({'href': 'https://twitter.com/intent/tweet?text=Wanna be a Lyft driver? %23LyftGame&url=' + url})
+                    img.twitter.js-twitter(src='imgs/twitter.png')
+            p.play-again.js-play-again
+                a&attributes({'href': url}) Play again?
 
-    script#template-user-profile(type='x-tmpl-mustache')
-      include user_profile
+        script#template-user-profile(type='x-tmpl-mustache')
+            include user_profile
 
-    script(type='text/javascript', src='bower_components/jquery/dist/jquery.min.js')
-    script(type='text/javascript', src='bower_components/jqueryui/jquery-ui.min.js')
-    script(type='text/javascript', src='bower_components/snap.svg/dist/snap.svg-min.js')
-    script(type='text/javascript', src='bower_components/mustache.js/mustache.min.js')
-    script(type='text/javascript', src='js/main.js')
+        script(type='text/javascript', src='bower_components/jquery/dist/jquery.min.js')
+        script(type='text/javascript', src='bower_components/jqueryui/jquery-ui.min.js')
+        script(type='text/javascript', src='bower_components/snap.svg/dist/snap.svg-min.js')
+        script(type='text/javascript', src='bower_components/mustache.js/mustache.min.js')
+        script(type='text/javascript', src='js/main.js')
